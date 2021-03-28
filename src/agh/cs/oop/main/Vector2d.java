@@ -1,4 +1,4 @@
-package main;
+package agh.cs.oop.main;
 
 import java.util.Objects;
 

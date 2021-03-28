@@ -1,7 +1,6 @@
-import main.Vector2d;
 import org.junit.Assert;
+import agh.cs.oop.main.MapDirection;
 import org.junit.Test;
-import main.MapDirection;
 
 public class MapDirectionTest {
 

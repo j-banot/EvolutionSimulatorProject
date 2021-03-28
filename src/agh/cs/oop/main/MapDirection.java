@@ -1,4 +1,4 @@
-package main;
+package agh.cs.oop.main;
 
 public enum MapDirection {
     NORTH,

@@ -1,5 +1,4 @@
-import main.MapDirection;
-import main.Vector2d;
+import agh.cs.oop.main.Vector2d;
 import org.junit.Assert;
 import org.junit.Test;
 
