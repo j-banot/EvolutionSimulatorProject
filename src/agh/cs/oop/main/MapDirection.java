@@ -21,6 +21,7 @@ public enum MapDirection {
         }
     }
 
+    //clockwise order next direction
     public MapDirection next(){
         switch(this) {
             case NORTH:
@@ -36,6 +37,7 @@ public enum MapDirection {
         }
     }
 
+    //clockwise order previous direction
     public MapDirection previous(){
         switch(this) {
             case NORTH:

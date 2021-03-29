@@ -1,6 +1,5 @@
 package agh.cs.oop.main;
 
-import java.util.Vector;
 
 public class Animal {
     private MapDirection mapDirection;
@@ -21,6 +20,7 @@ public class Animal {
                 break;
             case FORWARD:
                 Vector2d tmpPosition = position.add(mapDirection.toUnitVector());
+                // Checks if the result position is in the map scope, currently map size is 5x5
                 if (tmpPosition.x > 4 || tmpPosition.x < 0 || tmpPosition.y > 4 || tmpPosition.y < 0) ;
                 else position = tmpPosition;
                 break;

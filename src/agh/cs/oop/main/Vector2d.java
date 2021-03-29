@@ -16,16 +16,19 @@ public class Vector2d {
         return "(" + this.x + "," + this.y + ")";
     }
 
+    // checks if both vector components of a vector are lower than or equal than given one
     public boolean precedes(Vector2d other) {
         if (this.x <= other.x && this.y <= other.y) return true;
         else {return false;}
     }
 
+    //checks if both vector components of a vector are greater than or equal than given
     public boolean follows(Vector2d other) {
         if (this.x >= other.x && this.y >= other.y) return true;
         else {return false;}
     }
 
+    //returns a upper right corner of a rectangle built on both vectors
     public Vector2d upperRight(Vector2d other) {
         int tmpX, tmpY;
         if (this.x >= other.x) tmpX = this.x;
@@ -35,6 +38,7 @@ public class Vector2d {
         return new Vector2d(tmpX, tmpY);
     }
 
+    //returns a lower left corner of a rectangle built on both vectors
     public Vector2d lowerLeft(Vector2d other) {
         int tmpX, tmpY;
         if (this.x <= other.x) tmpX = this.x;
