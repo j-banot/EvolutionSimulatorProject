@@ -17,6 +17,7 @@ public class OptionsParser {
                 case "backward":
                     moveDirections.add(MoveDirection.BACKWARD);
                     i++;
+                    break;
                 case "r":
                 case "right":
                     moveDirections.add(MoveDirection.RIGHT);

@@ -10,6 +10,14 @@ public class Animal {
         position = new Vector2d(2,2);
     }
 
+    public MapDirection getMapDirection() {
+        return mapDirection;
+    }
+
+    public Vector2d getPosition() {
+        return position;
+    }
+
     public void move(MoveDirection moveDirection) {
         switch(moveDirection) {
             case RIGHT:
