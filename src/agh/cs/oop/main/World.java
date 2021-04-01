@@ -1,5 +1,10 @@
 package agh.cs.oop.main;
 
+//TO DO: descriptions and comments in the way shown below
+// /**
+// * Description
+// */
+
 public class World {
 
     public static void main(String[] args) {
