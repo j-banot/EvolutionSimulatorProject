@@ -1,4 +1,4 @@
-package agh.cs.oop.main;
+package agh.cs.oop;
 
 public interface IEngine {
 

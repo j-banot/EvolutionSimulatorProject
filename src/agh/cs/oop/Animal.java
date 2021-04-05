@@ -1,4 +1,4 @@
-package agh.cs.oop.main;
+package agh.cs.oop;
 
 //TO DO: descriptions and comments in the way shown below
 // /**
@@ -15,6 +15,16 @@ public class Animal {
         position = new Vector2d(2,2);
     }
 
+    public Animal(IWorldMap map) {
+        mapDirection = MapDirection.NORTH;
+        position = new Vector2d(2,2);
+    }
+
+    public Animal(IWorldMap map, Vector2d initialPosition) {
+        mapDirection = MapDirection.NORTH;
+        position = new Vector2d(2,2);
+    }
+
     public MapDirection getMapDirection() {
         return mapDirection;
     }
@@ -23,7 +33,7 @@ public class Animal {
         return position;
     }
 
-    public void move(MoveDirection moveDirection) {
+    public void move(MoveDirection moveDirection, IWorldMap map) {
         switch(moveDirection) {
             case RIGHT:
                 mapDirection = mapDirection.next();
@@ -33,14 +43,11 @@ public class Animal {
                 break;
             case FORWARD:
                 Vector2d tmpPosition = position.add(mapDirection.toUnitVector());
-                // Checks if the result position is in the map scope, currently map size is 5x5
-                if (tmpPosition.x > 4 || tmpPosition.x < 0 || tmpPosition.y > 4 || tmpPosition.y < 0) ;
-                else position = tmpPosition;
+                if (map.canMoveTo(tmpPosition)) position = tmpPosition;
                 break;
             case BACKWARD:
                 tmpPosition = position.subtract(mapDirection.toUnitVector());
-                if (tmpPosition.x > 4 || tmpPosition.x < 0 || tmpPosition.y > 4 || tmpPosition.y < 0) ;
-                else position = tmpPosition;
+                if (map.canMoveTo(tmpPosition)) position = tmpPosition;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + this);
@@ -49,6 +56,17 @@ public class Animal {
 
     @Override
     public String toString() {
-        return "Animal{" + "direction=" + mapDirection + ", position=" + position + '}';
+        switch (mapDirection) {
+            case NORTH:
+                return "N";
+            case SOUTH:
+                return "S";
+            case EAST:
+                return "E";
+            case WEST:
+                return "W";
+            default:
+                throw new IllegalStateException("Unexpected value: " + this);
+        }
     }
 }
