@@ -22,7 +22,7 @@ public class Animal {
 
     public Animal(IWorldMap map, Vector2d initialPosition) {
         mapDirection = MapDirection.NORTH;
-        position = new Vector2d(2,2);
+        position = initialPosition;
     }
 
     public MapDirection getMapDirection() {

@@ -25,7 +25,7 @@ public class RectangularMap implements IWorldMap {
 
     @Override
     public boolean place(Animal animal) {
-        if (this.isOccupied(animal.getPosition())) {
+        if (!(this.isOccupied(animal.getPosition()))) {
             animals.add(animal);
             return true;
         }
@@ -35,7 +35,7 @@ public class RectangularMap implements IWorldMap {
     @Override
     public boolean isOccupied(Vector2d position) {
         for (Animal animal : animals) {
-            if (animal.getPosition() == position) return true;
+            if (animal.getPosition().equals(position)) return true;
         }
         return false;
     }
@@ -43,7 +43,7 @@ public class RectangularMap implements IWorldMap {
     @Override
     public Object objectAt(Vector2d position) {
         for (Animal animal : animals) {
-            if (animal.getPosition() == position) return animal;
+            if (animal.getPosition().equals(position)) return animal;
         }
         //TO DO: add part with returning plants
         return null;
