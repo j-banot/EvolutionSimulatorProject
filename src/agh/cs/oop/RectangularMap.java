@@ -5,7 +5,7 @@ import java.util.List;
 
 public class RectangularMap implements IWorldMap {
 
-    List<Animal> animals = new ArrayList<>();
+    public List<Animal> animals = new ArrayList<>();
     public int mapHeight;
     public int mapWidth;
 
