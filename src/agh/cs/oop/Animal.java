@@ -25,6 +25,11 @@ public class Animal {
         position = initialPosition;
     }
 
+    public Animal(IWorldMap map, Vector2d initialPosition, MapDirection direction) {
+        mapDirection = direction;
+        position = initialPosition;
+    }
+
     public MapDirection getMapDirection() {
         return mapDirection;
     }
@@ -32,6 +37,7 @@ public class Animal {
     public Vector2d getPosition() {
         return position;
     }
+
 
     public void move(MoveDirection moveDirection, IWorldMap map) {
         switch(moveDirection) {
