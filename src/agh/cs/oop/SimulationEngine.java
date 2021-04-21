@@ -13,7 +13,7 @@ public class SimulationEngine implements IEngine{
 
     public SimulationEngine(MoveDirection[] directions, RectangularMap map, Vector2d[] positions){
         for (Vector2d position : positions) {
-            map.place(new Animal(map, position));
+            map.placeAnimal(new Animal(map, position));
             animalCount += 1;
         }
         directionsList = Arrays.asList(directions);

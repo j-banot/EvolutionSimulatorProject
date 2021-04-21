@@ -17,8 +17,8 @@ public class SimulationEngineTest {
     public void testRunDataSample1() {
         engine.run();
         //TO DO: spilt asserts into separate tests! And make it more READABLE
-        Animal animal1 = map.animals.get(0);
-        Animal animal2 = map.animals.get(1);
+        Animal animal1 = map.getAnimals().get(0);
+        Animal animal2 = map.getAnimals().get(1);
         Assert.assertTrue(animal1.getPosition().equals(tmpAnimal1.getPosition()));
         Assert.assertTrue(animal2.getPosition().equals(tmpAnimal2.getPosition()));
         Assert.assertTrue(animal1.getMapDirection() == tmpAnimal1.getMapDirection());

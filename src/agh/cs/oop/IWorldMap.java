@@ -9,7 +9,7 @@ public interface IWorldMap {
 
     boolean canMoveTo(Vector2d position);
 
-    boolean place(Animal animal);
+    boolean placeAnimal(Animal animal);
 
     boolean isOccupied(Vector2d position);
 
