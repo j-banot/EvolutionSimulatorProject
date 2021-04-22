@@ -70,4 +70,6 @@ abstract class AbstractWorldMap implements IWorldMap {
         MapVisualizer map = new MapVisualizer(this);
         return map.draw(new Vector2d(0,0), new Vector2d(mapWidth-1, mapHeight-1));
     }
+
+    //TO DO: add a possibility for an animal to eat grass when they meet on the same tile
 }

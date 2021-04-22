@@ -15,14 +15,7 @@ public class GrassField extends AbstractWorldMap{
 
         for (int i = 0; i < grassFields; i++) {
             boolean canBePlaced = false;
-            while (!canBePlaced) {
-                // generate a vector from range (0, 0) - (sqrt(n*10), sqrt(n*10))
-                int randX = ThreadLocalRandom.current().nextInt(0, (int) sqrt(grassFieldsCount * 10));
-                int randY = ThreadLocalRandom.current().nextInt(0, (int) sqrt(grassFieldsCount * 10));
-                Grass tmpGrass = new Grass(new Vector2d(randX, randY));
-                //try to place grass field, if the place is occupied generate new coordinates
-                canBePlaced = this.placeGrass(tmpGrass);
-            }
+            while (!canBePlaced) { canBePlaced = this.generateGrassField(); }
         }
     }
 
@@ -42,5 +35,14 @@ public class GrassField extends AbstractWorldMap{
             max = tmpPosition.upperRight(max);
         }
         return map.draw(min, max);
+    }
+
+    public boolean generateGrassField() {
+        // generate a vector from range (0, 0) - (sqrt(n*10), sqrt(n*10))
+        int randX = ThreadLocalRandom.current().nextInt(0, (int) sqrt(grassFieldsCount * 10));
+        int randY = ThreadLocalRandom.current().nextInt(0, (int) sqrt(grassFieldsCount * 10));
+        //try to place grass field, if the place is occupied generate new coordinates
+        Grass tmpGrass = new Grass(new Vector2d(randX, randY));
+        return this.placeGrass(tmpGrass);
     }
 }

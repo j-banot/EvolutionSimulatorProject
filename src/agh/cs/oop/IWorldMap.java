@@ -8,7 +8,7 @@ package agh.cs.oop;
 public interface IWorldMap {
 
     boolean canMoveTo(Vector2d position);
-
+    // TO DO: Add IMapElement
     boolean placeAnimal(Animal animal);
 
     boolean placeGrass(Grass grass);
@@ -16,5 +16,4 @@ public interface IWorldMap {
     boolean isOccupied(Vector2d position);
 
     Object objectAt(Vector2d position);
-
 }
