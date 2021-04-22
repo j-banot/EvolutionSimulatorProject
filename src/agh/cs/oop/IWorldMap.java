@@ -11,6 +11,8 @@ public interface IWorldMap {
 
     boolean placeAnimal(Animal animal);
 
+    boolean placeGrass(Grass grass);
+
     boolean isOccupied(Vector2d position);
 
     Object objectAt(Vector2d position);

@@ -12,22 +12,17 @@ abstract class AbstractWorldMap implements IWorldMap {
     public List<Animal> getAnimals() {
         return animals;
     }
-
+    public List<Grass> getGrass() { return grass; }
     public int getMapWidth() {
         return mapWidth;
     }
-
     public int getMapHeight() {
         return mapHeight;
     }
 
     @Override
     public boolean canMoveTo(Vector2d position) {
-        if (position.follows(new Vector2d(0,0)) && position.precedes(new Vector2d(mapWidth-1, mapHeight-1)))
-            return true;
-        else {
-            return false;
-        }
+        return position.follows(new Vector2d(0, 0)) && position.precedes(new Vector2d(mapWidth - 1, mapHeight - 1));
     }
 
     @Override
@@ -39,6 +34,7 @@ abstract class AbstractWorldMap implements IWorldMap {
         return false;
     }
 
+    @Override
     public boolean placeGrass(Grass grassField) {
         if (!(this.isOccupied(grassField.getPosition()))) {
             grass.add(grassField);
@@ -52,7 +48,7 @@ abstract class AbstractWorldMap implements IWorldMap {
         for (Animal animal : animals) {
             if (animal.getPosition().equals(position)) return true;
         }
-        for  (Grass grassField : grass) {
+        for (Grass grassField : grass) {
             if (grassField.getPosition().equals(position)) return true;
         }
         return false;
