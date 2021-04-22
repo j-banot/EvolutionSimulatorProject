@@ -6,4 +6,5 @@ public class RectangularMap extends AbstractWorldMap {
         mapHeight = height;
         mapWidth = width;
     }
+
 }

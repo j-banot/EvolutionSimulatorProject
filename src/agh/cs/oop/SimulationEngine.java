@@ -35,7 +35,6 @@ public class SimulationEngine implements IEngine{
 
     @Override
     public void run() {
-        int counter = 0;
         Iterator<Animal> animalIterator = animalList.iterator();
         Iterator<MoveDirection> directionIterator = directionsList.iterator();
         while (directionIterator.hasNext()) {
