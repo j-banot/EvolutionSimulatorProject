@@ -1,8 +1,10 @@
 package agh.cs.oop;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SimulationEngine implements IEngine{
 
@@ -18,7 +20,8 @@ public class SimulationEngine implements IEngine{
         }
         directionsList = Arrays.asList(directions);
         tmpMap = map;
-        animalList = map.animals;
+        //TO DO: not sure if it is correct! same in second constructor
+        animalList = new ArrayList<>(map.animals.values());
 
     }
 //TO DO: get to know if possible and how I can merge these two constructors
@@ -29,7 +32,7 @@ public class SimulationEngine implements IEngine{
         }
         directionsList = Arrays.asList(directions);
         tmpMap = map;
-        animalList = map.animals;
+        animalList = new ArrayList<>(map.animals.values());
 
     }
 

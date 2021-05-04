@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static java.lang.Math.sqrt;
 
-public class GrassField extends AbstractWorldMap{
+public class GrassField extends AbstractWorldMap implements IPositionChangeObserver{
 
     int grassFieldsCount;
 
@@ -24,12 +24,12 @@ public class GrassField extends AbstractWorldMap{
         MapVisualizer map = new MapVisualizer(this);
         Vector2d min = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
         Vector2d max = new Vector2d(0, 0);
-        for (Animal animal : animals) {
+        for (Animal animal : animals.values()) {
             Vector2d tmpPosition = animal.getPosition();
             min = tmpPosition.lowerLeft(min);
             max = tmpPosition.upperRight(max);
         }
-        for (Grass grassField : grass) {
+        for (Grass grassField : grass.values()) {
             Vector2d tmpPosition = grassField.getPosition();
             min = tmpPosition.lowerLeft(min);
             max = tmpPosition.upperRight(max);

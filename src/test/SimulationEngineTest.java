@@ -2,6 +2,9 @@ import agh.cs.oop.*;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SimulationEngineTest {
 //    String[] arguments = {"f", "b", "b", "r", "b", "l", "r", "l", "f", "b", "f", "f"};
     String[] arguments = {"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"};
@@ -17,8 +20,9 @@ public class SimulationEngineTest {
     public void testRunDataSample1() {
         engine.run();
         //TO DO: spilt asserts into separate tests! And make it more READABLE
-        Animal animal1 = map.getAnimals().get(0);
-        Animal animal2 = map.getAnimals().get(1);
+        List<Animal> tmpAnimals = new ArrayList<>(map.getAnimals().values());
+        Animal animal1 = tmpAnimals.get(0);
+        Animal animal2 = tmpAnimals.get(1);
         Assert.assertTrue(animal1.getPosition().equals(tmpAnimal1.getPosition()));
         Assert.assertTrue(animal2.getPosition().equals(tmpAnimal2.getPosition()));
         Assert.assertTrue(animal1.getMapDirection() == tmpAnimal1.getMapDirection());

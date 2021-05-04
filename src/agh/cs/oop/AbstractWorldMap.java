@@ -1,18 +1,19 @@
 package agh.cs.oop;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 abstract class AbstractWorldMap implements IWorldMap {
-    protected List <Animal> animals = new ArrayList<>();
-    protected List <Grass> grass = new ArrayList<>();
+    protected Map<Vector2d, Animal> animals = new HashMap<>();
+    protected Map<Vector2d, Grass> grass = new HashMap<>();
     protected int mapWidth;
     protected int mapHeight;
 
-    public List<Animal> getAnimals() {
+    public Map<Vector2d, Animal> getAnimals() {
         return animals;
     }
-    public List<Grass> getGrass() { return grass; }
+    public Map<Vector2d, Grass> getGrass() { return grass; }
     public int getMapWidth() {
         return mapWidth;
     }
@@ -28,7 +29,8 @@ abstract class AbstractWorldMap implements IWorldMap {
     @Override
     public boolean placeAnimal(Animal animal) {
         if (!(this.isOccupied(animal.getPosition()))) {
-            animals.add(animal);
+            animal.addObserver(animal.observer);
+            animals.put(animal.getPosition(), animal);
             return true;
         }
         return false;
@@ -37,7 +39,8 @@ abstract class AbstractWorldMap implements IWorldMap {
     @Override
     public boolean placeGrass(Grass grassField) {
         if (!(this.isOccupied(grassField.getPosition()))) {
-            grass.add(grassField);
+            grassField.addObserver(grassField.observer);
+            grass.put(grassField.getPosition(), grassField);
             return true;
         }
         return false;
@@ -45,24 +48,22 @@ abstract class AbstractWorldMap implements IWorldMap {
 
     @Override
     public boolean isOccupied(Vector2d position) {
-        for (Animal animal : animals) {
-            if (animal.getPosition().equals(position)) return true;
-        }
-        for (Grass grassField : grass) {
-            if (grassField.getPosition().equals(position)) return true;
-        }
+        //TO DO: not sure if the method should consider both animals and grass (maybe animals only?)
+        if (animals.containsKey(position) || grass.containsKey(position)) return true;
         return false;
     }
 
     @Override
     public Object objectAt(Vector2d position) {
-        for (Animal animal : animals) {
-            if (animal.getPosition().equals(position)) return animal;
-        }
-        for (Grass grassField : grass) {
-            if (grassField.getPosition().equals(position)) return grassField;
-        }
-        return null;
+        if(animals.containsKey(position)) return animals.get(position);
+        else return grass.getOrDefault(position, null);
+    }
+
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        Animal tmpAnimal = animals.get(oldPosition);
+        animals.remove(oldPosition);
+        animals.put(newPosition, tmpAnimal);
+
     }
 
     @Override
@@ -71,5 +72,17 @@ abstract class AbstractWorldMap implements IWorldMap {
         return map.draw(new Vector2d(0,0), new Vector2d(mapWidth-1, mapHeight-1));
     }
 
-    //TO DO: add a possibility for an animal to eat grass when they meet on the same tile
+    //TO DO: check if it is correct and try to use it
+    public boolean eatGrass (Animal animal) {
+        Iterator<Grass> grassIterator = grass.values().iterator();
+
+        while (grassIterator.hasNext()) {
+            if (grassIterator.next().getPosition().equals(animal.getPosition())) {
+                System.out.println("yumm");
+                grassIterator.remove();
+                return true;
+            }
+        }
+        return false;
+    }
 }

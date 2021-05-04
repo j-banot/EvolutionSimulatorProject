@@ -10,6 +10,7 @@ public class Animal implements IMapElement{
 
     private MapDirection mapDirection;
     private Vector2d position;
+    IPositionChangeObserver observer = null;
 
     public Animal() {
         mapDirection = MapDirection.NORTH;
@@ -39,7 +40,6 @@ public class Animal implements IMapElement{
         return position;
     }
 
-
     public void move(MoveDirection moveDirection, IWorldMap map) {
         switch(moveDirection) {
             case RIGHT:
@@ -50,11 +50,17 @@ public class Animal implements IMapElement{
                 break;
             case FORWARD:
                 Vector2d tmpPosition = position.add(mapDirection.toUnitVector());
-                if (map.canMoveTo(tmpPosition)) position = tmpPosition;
+                if (map.canMoveTo(tmpPosition)) {
+                    positionChanged(position, tmpPosition);
+                    position = tmpPosition;
+                }
                 break;
             case BACKWARD:
                 tmpPosition = position.subtract(mapDirection.toUnitVector());
-                if (map.canMoveTo(tmpPosition)) position = tmpPosition;
+                if (map.canMoveTo(tmpPosition)) {
+                    positionChanged(position, tmpPosition);
+                    position = tmpPosition;
+                }
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + this);
@@ -74,6 +80,23 @@ public class Animal implements IMapElement{
                 return "W";
             default:
                 throw new IllegalStateException("Unexpected value: " + this);
+        }
+    }
+
+    @Override
+    public void addObserver(IPositionChangeObserver observer) {
+        this.observer = observer;
+    }
+
+    @Override
+    public void removeObserver(IPositionChangeObserver observer) {
+        this.observer = null;
+    }
+
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        if (observer != null) {
+            observer.positionChanged(oldPosition, newPosition);
         }
     }
 }
