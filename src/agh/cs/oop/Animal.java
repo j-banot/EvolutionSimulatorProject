@@ -6,7 +6,8 @@ package agh.cs.oop;
 // */
 
 
-public class Animal {
+public class Animal implements IMapElement{
+
     private MapDirection mapDirection;
     private Vector2d position;
 
