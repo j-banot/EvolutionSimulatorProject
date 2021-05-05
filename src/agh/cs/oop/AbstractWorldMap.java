@@ -33,7 +33,7 @@ abstract class AbstractWorldMap implements IWorldMap {
             animals.put(animal.getPosition(), animal);
             return true;
         }
-        return false;
+        throw new IllegalArgumentException("Element can not be placed on: " + animal.getPosition());
     }
 
     @Override
@@ -43,7 +43,7 @@ abstract class AbstractWorldMap implements IWorldMap {
             grass.put(grassField.getPosition(), grassField);
             return true;
         }
-        return false;
+        throw new IllegalArgumentException("Element can not be placed on: " + grassField.getPosition());
     }
 
     @Override

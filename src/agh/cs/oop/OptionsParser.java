@@ -34,7 +34,7 @@ public class OptionsParser {
                     i++;
                     break;
                 default:
-                    throw new IllegalStateException("Unexpected value: " + direction);
+                    throw new IllegalArgumentException("Unexpected direction value: " + direction);
             }
         }
         MoveDirection[] result = moveDirections.toArray(new MoveDirection[moveDirections.size()]);
