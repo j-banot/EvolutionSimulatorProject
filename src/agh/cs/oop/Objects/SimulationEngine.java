@@ -1,12 +1,15 @@
-package agh.cs.oop;
+package agh.cs.oop.Objects;
+
+import agh.cs.oop.Enums.MoveDirection;
+import agh.cs.oop.Interfaces.IEngine;
+import agh.cs.oop.Interfaces.IWorldMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class SimulationEngine implements IEngine{
+public class SimulationEngine implements IEngine {
 
     public List<MoveDirection> directionsList;
     public List<Animal> animalList;
@@ -25,7 +28,7 @@ public class SimulationEngine implements IEngine{
 
     }
 //TO DO: get to know if possible and how I can merge these two constructors
-    public SimulationEngine(MoveDirection[] directions, GrassField map, Vector2d[] positions){
+    public SimulationEngine(MoveDirection[] directions, Grassland map, Vector2d[] positions){
         for (Vector2d position : positions) {
             map.placeAnimal(new Animal(map, position));
             animalCount += 1;

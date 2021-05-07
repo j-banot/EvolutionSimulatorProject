@@ -1,4 +1,6 @@
-package agh.cs.oop;
+package agh.cs.oop.Interfaces;
+
+import agh.cs.oop.Objects.Vector2d;
 
 public interface IPositionChangeObserver {
 

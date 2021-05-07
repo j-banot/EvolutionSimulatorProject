@@ -1,9 +1,13 @@
-package agh.cs.oop;
+package agh.cs.oop.Interfaces;
 
 //TO DO: descriptions and comments in the way shown below (as example see interfaces in Lab4)
 // /**
 // * Description
 // */
+
+import agh.cs.oop.Objects.Animal;
+import agh.cs.oop.Objects.Grass;
+import agh.cs.oop.Objects.Vector2d;
 
 public interface IWorldMap {
 

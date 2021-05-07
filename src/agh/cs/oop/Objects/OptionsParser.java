@@ -1,9 +1,11 @@
-package agh.cs.oop;
+package agh.cs.oop.Objects;
 
 //TO DO: descriptions and comments in the way shown below
 // /**
 // * Description
 // */
+
+import agh.cs.oop.Enums.MoveDirection;
 
 import java.util.ArrayList;
 

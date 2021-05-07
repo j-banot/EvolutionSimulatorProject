@@ -1,6 +1,10 @@
-package agh.cs.oop;
+package agh.cs.oop.Objects;
 
-public class Grass implements IMapElement{
+import agh.cs.oop.Interfaces.IMapElement;
+import agh.cs.oop.Interfaces.IPositionChangeObserver;
+import agh.cs.oop.Objects.Vector2d;
+
+public class Grass implements IMapElement {
 
     Vector2d position;
     IPositionChangeObserver observer = null;

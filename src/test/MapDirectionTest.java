@@ -1,5 +1,5 @@
 import org.junit.Assert;
-import agh.cs.oop.MapDirection;
+import agh.cs.oop.Enums.MapDirection;
 import org.junit.Test;
 
 public class MapDirectionTest {

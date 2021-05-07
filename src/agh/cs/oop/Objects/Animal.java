@@ -1,4 +1,4 @@
-package agh.cs.oop;
+package agh.cs.oop.Objects;
 
 //TO DO: descriptions and comments in the way shown below
 // /**
@@ -6,7 +6,13 @@ package agh.cs.oop;
 // */
 
 
-public class Animal implements IMapElement{
+import agh.cs.oop.Interfaces.IMapElement;
+import agh.cs.oop.Interfaces.IPositionChangeObserver;
+import agh.cs.oop.Interfaces.IWorldMap;
+import agh.cs.oop.Enums.MapDirection;
+import agh.cs.oop.Enums.MoveDirection;
+
+public class Animal implements IMapElement {
 
     private MapDirection mapDirection;
     private Vector2d position;

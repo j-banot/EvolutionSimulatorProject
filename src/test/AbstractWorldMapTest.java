@@ -1,6 +1,6 @@
-import agh.cs.oop.Animal;
-import agh.cs.oop.RectangularMap;
-import agh.cs.oop.Vector2d;
+import agh.cs.oop.Objects.Animal;
+import agh.cs.oop.Objects.RectangularMap;
+import agh.cs.oop.Objects.Vector2d;
 import org.junit.Assert;
 import org.junit.Test;
 

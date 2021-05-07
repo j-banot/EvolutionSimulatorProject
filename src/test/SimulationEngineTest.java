@@ -1,4 +1,7 @@
-import agh.cs.oop.*;
+import agh.cs.oop.Enums.MapDirection;
+import agh.cs.oop.Enums.MoveDirection;
+import agh.cs.oop.Interfaces.IEngine;
+import agh.cs.oop.Objects.*;
 import org.junit.Assert;
 import org.junit.Test;
 

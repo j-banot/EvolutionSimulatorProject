@@ -1,4 +1,4 @@
-package agh.cs.oop;
+package agh.cs.oop.Objects;
 
 //TO DO: descriptions and comments in the way shown below
 // /**

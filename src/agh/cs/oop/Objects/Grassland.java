@@ -1,14 +1,16 @@
-package agh.cs.oop;
+package agh.cs.oop.Objects;
+
+import agh.cs.oop.Interfaces.IPositionChangeObserver;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 import static java.lang.Math.sqrt;
 
-public class GrassField extends AbstractWorldMap implements IPositionChangeObserver{
+public class Grassland extends AbstractWorldMap implements IPositionChangeObserver {
 
     int grassFieldsCount;
 
-    public GrassField (int grassFields) {
+    public Grassland(int grassFields) {
         this.grassFieldsCount = grassFields;
         super.mapHeight = (int) sqrt(grassFieldsCount*10);
         super.mapWidth = (int) sqrt(grassFieldsCount*10);

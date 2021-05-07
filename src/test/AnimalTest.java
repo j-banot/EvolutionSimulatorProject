@@ -1,8 +1,11 @@
-import agh.cs.oop.*;
+import agh.cs.oop.Enums.MapDirection;
+import agh.cs.oop.Enums.MoveDirection;
+import agh.cs.oop.Objects.Animal;
+import agh.cs.oop.Objects.OptionsParser;
+import agh.cs.oop.Objects.RectangularMap;
+import agh.cs.oop.Objects.Vector2d;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.Map;
 
 public class AnimalTest {
 

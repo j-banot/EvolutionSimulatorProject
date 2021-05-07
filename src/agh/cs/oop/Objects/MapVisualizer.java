@@ -1,5 +1,8 @@
-package agh.cs.oop;
+package agh.cs.oop.Objects;
 
+
+import agh.cs.oop.Interfaces.IWorldMap;
+import agh.cs.oop.Objects.Vector2d;
 
 /**
  * The map visualizer converts the {@link IWorldMap} map into a string

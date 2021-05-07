@@ -1,4 +1,6 @@
-package agh.cs.oop;
+package agh.cs.oop.Objects;
+
+import agh.cs.oop.Interfaces.IWorldMap;
 
 import java.util.HashMap;
 import java.util.Iterator;
