@@ -23,11 +23,11 @@ public class SimulationEngine implements IEngine {
         }
         directionsList = Arrays.asList(directions);
         tmpMap = map;
-        //TO DO: not sure if it is correct! same in second constructor
+        //TODO: not sure if it is correct! same in second constructor
         animalList = new ArrayList<>(map.animals.values());
 
     }
-//TO DO: get to know if possible and how I can merge these two constructors
+//TODO: get to know if possible and how I can merge these two constructors
     public SimulationEngine(MoveDirection[] directions, Grassland map, Vector2d[] positions){
         for (Vector2d position : positions) {
             map.placeAnimal(new Animal(map, position));

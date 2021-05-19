@@ -50,7 +50,7 @@ abstract class AbstractWorldMap implements IWorldMap {
 
     @Override
     public boolean isOccupied(Vector2d position) {
-        //TO DO: not sure if the method should consider both animals and grass (maybe animals only?)
+        //TODO: not sure if the method should consider both animals and grass (maybe animals only?)
         if (animals.containsKey(position) || grass.containsKey(position)) return true;
         return false;
     }
@@ -74,7 +74,7 @@ abstract class AbstractWorldMap implements IWorldMap {
         return map.draw(new Vector2d(0,0), new Vector2d(mapWidth-1, mapHeight-1));
     }
 
-    //TO DO: check if it is correct and try to use it
+    //TODO: check if it is correct and try to use it
     public boolean eatGrass (Animal animal) {
         Iterator<Grass> grassIterator = grass.values().iterator();
 

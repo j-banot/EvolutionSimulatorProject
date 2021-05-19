@@ -1,6 +1,6 @@
 package agh.cs.oop.Enums;
 
-//TO DO: descriptions and comments in the way shown below
+//TODO: descriptions and comments in the way shown below
 // /**
 // * Description
 // */

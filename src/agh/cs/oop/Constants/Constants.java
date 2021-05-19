@@ -22,4 +22,20 @@ public class Constants {
     public static int LEVEL3; //Red Dino
     public static int LEVEL4; //Pink Dino
 
+    static final String dinosPath = "src/agh/cs/oop/Graphics/Dinos/";
+    static final String plantsPath = "src/agh/cs/oop/Graphics/Plants/";
+    static final String terrainPath = "src/agh/cs/oop/Graphics/Terrain/";
+
+    public static final String GRASS_SQUARE_PATH = terrainPath + "grass.png";
+    public static final String SAND_SQUARE_PATH = terrainPath + "sand.png";
+    public static final String PLANT_ON_GRASS_PATH = plantsPath + "PlantOnGrass.png";
+    public static final String PLANT_ON_SAND_PATH = plantsPath + "PlantOnSand.png";
+    public static final String WHITE_DINO_ON_GRASS_PATH = dinosPath + "WhiteDinoOnGrass.png";
+    public static final String WHITE_DINO_ON_SAND_PATH = dinosPath + "WhiteDinoOnSand.png";
+    public static final String BLUE_DINO_ON_GRASS_PATH = dinosPath + "BlueDinoOnGrass.png";
+    public static final String BLUE_DINO_ON_SAND_PATH = dinosPath + "BlueDinoOnSand.png";
+    public static final String RED_DINO_ON_GRASS_PATH = dinosPath + "RedDinoOnGrass.png";
+    public static final String RED_DINO_ON_SAND_PATH = dinosPath + "RedDinoOnSand.png";
+    public static final String PINK_DINO_ON_GRASS_PATH = dinosPath + "PinkDinoOnGrass.png";
+    public static final String PINK_DINO_ON_SAND_PATH = dinosPath + "PinkDinoOnSand.png";
 }

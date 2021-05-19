@@ -1,6 +1,6 @@
 package agh.cs.oop.Interfaces;
 
-//TO DO: descriptions and comments in the way shown below (as example see interfaces in Lab4)
+//TODO: descriptions and comments in the way shown below (as example see interfaces in Lab4)
 // /**
 // * Description
 // */

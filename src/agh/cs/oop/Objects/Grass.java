@@ -21,7 +21,7 @@ public class Grass implements IMapElement {
     public String toString() {
         return "*";
     }
-// TO DO: move observer methods to a common abstract class for Grass and Animal
+// TODO: move observer methods to a common abstract class for Grass and Animal
     @Override
     public void addObserver(IPositionChangeObserver observer) {
         this.observer = observer;
