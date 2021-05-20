@@ -19,8 +19,8 @@ public class WorldMap implements IWorldMap {
     protected int sizeOfJungleSquareSide;
     protected Map<Vector2d, ArrayList<Animal>> animals = new HashMap<>();
     protected Map<Vector2d, Grass> grass = new HashMap<>();
-    protected double numberOfAnimals;
-    protected double numberOfPlants;
+    protected int numberOfAnimals;
+    protected int numberOfPlants;
     protected double sumOfAnimalsEnergy;
     protected double sumOfDeathAges;
     protected int numberofDeaths;
@@ -40,16 +40,37 @@ public class WorldMap implements IWorldMap {
         this.allAnimalsAreDead = false;
     }
 
+    //Getters
     public Map<Vector2d, ArrayList<Animal>> getAnimals() {
         return animals;
     }
+
     public Map<Vector2d, Grass> getGrass() { return grass; }
-    public int getMapWidth() {
-        return mapWidth;
+
+    public int getBaseEnergy() { return this.baseEnergy; }
+
+    public int getNumberOfAnimals() { return numberOfAnimals; }
+
+    public int getNumberOfPlants() { return numberOfPlants; }
+
+    public int getDay() { return day; }
+
+    public double getAverageEnergy() { return (double) Math.round(sumOfAnimalsEnergy/numberOfAnimals); }
+
+    public double getAverageDeathAge() {
+        if (numberofDeaths != 0) return (double) Math.round(sumOfDeathAges/numberofDeaths);
+        else return 0;
     }
-    public int getMapHeight() {
-        return mapHeight;
+
+    public double getAverageNumberOfChildren(){ return (double) Math.round(numberOfChildern/numberOfAnimals); }
+
+    //TODO: implement
+    public int[] getDominantGenotype() {
+        return dominantGenotype;
     }
+
+    public boolean getIfAllAnimalsAreDead() { return allAnimalsAreDead; }
+
 
     @Override
     public boolean canMoveTo(Vector2d position) {
