@@ -8,14 +8,14 @@ import java.util.Map;
 
 abstract class AbstractWorldMap implements IWorldMap {
     protected Map<Vector2d, Animal> animals = new HashMap<>();
-    protected Map<Vector2d, Grass> grass = new HashMap<>();
+    protected Map<Vector2d, Plant> grass = new HashMap<>();
     protected int mapWidth;
     protected int mapHeight;
 
     public Map<Vector2d, Animal> getAnimals() {
         return animals;
     }
-    public Map<Vector2d, Grass> getGrass() { return grass; }
+    public Map<Vector2d, Plant> getGrass() { return grass; }
     public int getMapWidth() {
         return mapWidth;
     }
@@ -39,13 +39,12 @@ abstract class AbstractWorldMap implements IWorldMap {
     }
 
     @Override
-    public boolean placeGrass(Grass grassField) {
-        if (!(this.isOccupied(grassField.getPosition()))) {
-            grassField.addObserver(grassField.observer);
-            grass.put(grassField.getPosition(), grassField);
+    public boolean placeGrass(Plant plantField) {
+        if (!(this.isOccupied(plantField.getPosition()))) {
+            grass.put(plantField.getPosition(), plantField);
             return true;
         }
-        throw new IllegalArgumentException("Element can not be placed on: " + grassField.getPosition());
+        throw new IllegalArgumentException("Element can not be placed on: " + plantField.getPosition());
     }
 
     @Override
@@ -76,7 +75,7 @@ abstract class AbstractWorldMap implements IWorldMap {
 
     //TODO: check if it is correct and try to use it
     public boolean eatGrass (Animal animal) {
-        Iterator<Grass> grassIterator = grass.values().iterator();
+        Iterator<Plant> grassIterator = grass.values().iterator();
 
         while (grassIterator.hasNext()) {
             if (grassIterator.next().getPosition().equals(animal.getPosition())) {

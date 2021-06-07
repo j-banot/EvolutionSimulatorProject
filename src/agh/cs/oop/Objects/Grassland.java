@@ -31,8 +31,8 @@ public class Grassland extends AbstractWorldMap implements IPositionChangeObserv
             min = tmpPosition.lowerLeft(min);
             max = tmpPosition.upperRight(max);
         }
-        for (Grass grassField : grass.values()) {
-            Vector2d tmpPosition = grassField.getPosition();
+        for (Plant plantField : grass.values()) {
+            Vector2d tmpPosition = plantField.getPosition();
             min = tmpPosition.lowerLeft(min);
             max = tmpPosition.upperRight(max);
         }
@@ -44,7 +44,7 @@ public class Grassland extends AbstractWorldMap implements IPositionChangeObserv
         int randX = ThreadLocalRandom.current().nextInt(0, (int) sqrt(grassFieldsCount * 10));
         int randY = ThreadLocalRandom.current().nextInt(0, (int) sqrt(grassFieldsCount * 10));
         //try to place grass field, if the place is occupied generate new coordinates
-        Grass tmpGrass = new Grass(new Vector2d(randX, randY));
-        return this.placeGrass(tmpGrass);
+        Plant tmpPlant = new Plant(new Vector2d(randX, randY));
+        return this.placeGrass(tmpPlant);
     }
 }

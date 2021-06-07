@@ -74,4 +74,32 @@ public enum MapDirection {
                 throw new IllegalStateException("Unexpected value: " + this);
         }
     }
+
+    public int getValueOfDirection() {
+        switch(this) {
+            case NORTH:
+                return 0;
+            case EAST:
+                return 1;
+            case SOUTH:
+                return 2;
+            case WEST:
+                return 3;
+            default: throw new IllegalArgumentException("Unexpected value: " + this);
+        }
+    }
+
+    public MapDirection getDirectionFromValue(int value) {
+        switch(value) {
+            case 0:
+                return NORTH;
+            case 1:
+                return EAST;
+            case 2:
+                return SOUTH;
+            case 3:
+                return WEST;
+            default: throw new IllegalArgumentException("Value is out of range 0-3");
+        }
+    }
 }

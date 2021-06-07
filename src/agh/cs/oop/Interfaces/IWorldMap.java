@@ -6,18 +6,23 @@ package agh.cs.oop.Interfaces;
 // */
 
 import agh.cs.oop.Objects.Animal;
-import agh.cs.oop.Objects.Grass;
+import agh.cs.oop.Objects.Plant;
 import agh.cs.oop.Objects.Vector2d;
 
-public interface IWorldMap {
+public interface IWorldMap extends IPositionChangeObserver {
 
     boolean canMoveTo(Vector2d position);
     // TO DO: Add IMapElement
     boolean placeAnimal(Animal animal);
 
-    boolean placeGrass(Grass grass);
+    //TODO: check if it is needed
+    boolean placeGrass(Plant plant);
 
     boolean isOccupied(Vector2d position);
 
     Object objectAt(Vector2d position);
+
+    int getStartEnergy();
+
+    int getDay();
 }
