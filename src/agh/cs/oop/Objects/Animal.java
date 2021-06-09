@@ -12,10 +12,7 @@ import agh.cs.oop.Interfaces.IWorldMap;
 import agh.cs.oop.Enums.MapDirection;
 import agh.cs.oop.Enums.MoveDirection;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Animal implements IMapElement {
 
@@ -25,6 +22,7 @@ public class Animal implements IMapElement {
     private int numberOfChildren;
     private ArrayList<Integer> dominantGenotypes;
     private int[] genes;
+    int[] genesDistribution = new int[100];
     private int startEnergy;
     private double energy;
     private boolean isDead = false;
@@ -51,7 +49,7 @@ public class Animal implements IMapElement {
         this.numberOfChildren = 0;
         this.startEnergy = map.getStartEnergy();
         this.energy = this.getStartEnergy();
-        this.genes = getRandomGenes();
+        this.genes = generateRandomGenes();
         addObserver(map);
         setDominantGenotypes();
     }
@@ -62,7 +60,7 @@ public class Animal implements IMapElement {
         this.numberOfChildren = 0;
         this.startEnergy = map.getStartEnergy();
         this.energy = this.getStartEnergy();
-        this.genes = getRandomGenes();
+        this.genes = generateRandomGenes();
         addObserver(map);
         this.setPosition(initialPosition);
         setDominantGenotypes();
@@ -91,9 +89,17 @@ public class Animal implements IMapElement {
 
     public ArrayList<Integer> getDominantGenotypes() { return dominantGenotypes; }
 
-    private int[] getRandomGenes(){
-        //TODO: implement
-        return new int[1];
+    private int[] generateRandomGenes(){
+        Random random = new Random();
+        int [] genes = new int[32];
+        for (int i = 0; i < genes.length; i++) {
+            if (i < 8) genes[i] = i;
+            else {
+                genes[i] = random.nextInt(8);
+            }
+        }
+        Arrays.sort(genes);
+        return genes;
     }
 
     public int[] getGenes() { return genes; }
@@ -124,7 +130,10 @@ public class Animal implements IMapElement {
     public void changeEnergy(double difference) { this.energy += difference; }
 
     public void changeDirection() {
-        //TODO: implement
+        Random random = new Random();
+        int randomIndex = random.nextInt(this.genes.length);
+        int nextDirectionValue = this.genes[randomIndex];
+        this.direction = MapDirection.getDirectionFromValue(nextDirectionValue);
     }
 
     public void move(MoveDirection moveDirection, IWorldMap map) {
@@ -155,7 +164,32 @@ public class Animal implements IMapElement {
     }
 
     public static ArrayList<Animal> getTwoStrongest(ArrayList<Animal> animals){
-        //TODO: implement
+        if (animals.size() > 1) {
+            Animal tmpAnimal1 = animals.get(1);
+            Animal tmpAnimal2 = animals.get(0);
+
+            //first classification who is stronger in the first pair
+            if (tmpAnimal1.getEnergy() >= tmpAnimal2.getEnergy()) {
+                tmpAnimal1 = animals.get(0);
+                tmpAnimal2 = animals.get(1);
+            }
+
+            //classification of the rest of left animals
+            for (int i = 2; i < animals.size(); i++) {
+                if(animals.get(i).getEnergy() > animals.get(1).getEnergy()) {
+                    tmpAnimal2 = tmpAnimal1;
+                    tmpAnimal1 = animals.get(i);
+                } else if (animals.get(i).getEnergy() > tmpAnimal2.getEnergy()) {
+                    tmpAnimal2 = animals.get(i);
+                }
+            }
+            ArrayList<Animal> result = new ArrayList<>();
+            result.add(tmpAnimal1);
+            result.add(tmpAnimal2);
+            return result;
+
+        } else if (animals.size() == 1) return animals;
+
         return null;
     }
 
@@ -179,7 +213,7 @@ public class Animal implements IMapElement {
                 throw new IllegalStateException("Unexpected value: " + this);
         }
     }
-    private void addObserver(IPositionChangeObserver observer){
+    public void addObserver(IPositionChangeObserver observer){
         observers.add(observer);
     }
 

@@ -9,10 +9,15 @@ import agh.cs.oop.Objects.Vector2d;
 
 public enum MapDirection {
     NORTH,
+    NORTHEAST,
+    EAST,
+    SOUTHEAST,
     SOUTH,
+    SOUTHWEST,
     WEST,
-    EAST;
+    NORTHWEST;
 
+    //TODO: To be deleted
     public String toString(){
         switch(this) {
             case NORTH:
@@ -64,12 +69,20 @@ public enum MapDirection {
         switch(this) {
             case NORTH:
                 return new Vector2d(0,1);
-            case SOUTH:
-                return new Vector2d(0,-1);
+            case NORTHEAST:
+                return new Vector2d(1,1);
             case EAST:
                 return new Vector2d(1,0);
+            case SOUTHEAST:
+                return new Vector2d(1,-1);
+            case SOUTH:
+                return new Vector2d(0,-1);
+            case SOUTHWEST:
+                return new Vector2d(-1,-1);
             case WEST:
                 return new Vector2d(-1,0);
+            case NORTHWEST:
+                return new Vector2d(-1,1);
             default:
                 throw new IllegalStateException("Unexpected value: " + this);
         }
@@ -79,26 +92,42 @@ public enum MapDirection {
         switch(this) {
             case NORTH:
                 return 0;
-            case EAST:
+            case NORTHEAST:
                 return 1;
-            case SOUTH:
+            case EAST:
                 return 2;
-            case WEST:
+            case SOUTHEAST:
                 return 3;
+            case SOUTH:
+                return 4;
+            case SOUTHWEST:
+                return 5;
+            case WEST:
+                return 6;
+            case NORTHWEST:
+                return 7;
             default: throw new IllegalArgumentException("Unexpected value: " + this);
         }
     }
 
-    public MapDirection getDirectionFromValue(int value) {
+    public static MapDirection getDirectionFromValue(int value) {
         switch(value) {
             case 0:
                 return NORTH;
             case 1:
-                return EAST;
+                return NORTHEAST;
             case 2:
-                return SOUTH;
+                return EAST;
             case 3:
+                return SOUTHEAST;
+            case 4:
+                return SOUTH;
+            case 5:
+                return SOUTHWEST;
+            case 6:
                 return WEST;
+            case 7:
+                return NORTHWEST;
             default: throw new IllegalArgumentException("Value is out of range 0-3");
         }
     }

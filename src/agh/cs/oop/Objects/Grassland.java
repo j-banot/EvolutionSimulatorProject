@@ -47,4 +47,19 @@ public class Grassland extends AbstractWorldMap implements IPositionChangeObserv
         Plant tmpPlant = new Plant(new Vector2d(randX, randY));
         return this.placeGrass(tmpPlant);
     }
+
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition, Animal animal) {
+
+    }
+
+    @Override
+    public int getStartEnergy() {
+        return 0;
+    }
+
+    @Override
+    public int getDay() {
+        return 0;
+    }
 }
