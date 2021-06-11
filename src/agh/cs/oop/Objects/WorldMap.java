@@ -12,7 +12,7 @@ public class WorldMap implements IWorldMap {
     protected int baseEnergy;
     protected int moveEnergy;
     protected int plantEnergy;
-    protected Vector2d jungleStartingPooint;
+    protected Vector2d jungleStartingPoint;
     protected int sizeOfJungleSquareSide;
     protected Map<Vector2d, ArrayList<Animal>> animals = new HashMap<>();
     protected Map<Vector2d, Plant> plants = new HashMap<>();
@@ -77,7 +77,7 @@ public class WorldMap implements IWorldMap {
         this.sizeOfJungleSquareSide = (int) (this.mapHeight * 0.4);
         int x = (int) ((this.mapWidth / 2) - (this.sizeOfJungleSquareSide / 2));
         int y = (int) ((this.mapHeight / 2) - (this.sizeOfJungleSquareSide / 2));
-        this.jungleStartingPooint = new Vector2d(x, y);
+        this.jungleStartingPoint = new Vector2d(x, y);
     }
 
     public void setSumOfAnimalsEnergy(double sumOfAnimalsEnergy) {
@@ -220,6 +220,7 @@ public class WorldMap implements IWorldMap {
         }
     }
 
+    //TODO: check if it is needed
     public boolean areAllAroundOccupied(Vector2d position) {
         for (int i = 0; i < 8; i++) {
             Vector2d tmpPosition = position.add(MapDirection.getDirectionFromValue(i).toUnitVector());
@@ -248,17 +249,42 @@ public class WorldMap implements IWorldMap {
     }
 
     public void placeNewPlants() {
-        //TODO: implement placing one grass in the jungle and one grass on the normal area
+        Random random = new Random();
+        int x, y;
+        //placing one plant in jungle area
+        if (!isJungleFull()) {
+            do {
+                x = random.nextInt(sizeOfJungleSquareSide);
+                y = random.nextInt(sizeOfJungleSquareSide);
+                x += jungleStartingPoint.x;
+                y += jungleStartingPoint.y;
+            } while (isOccupied(new Vector2d(x, y)));
+            Plant newJunglePlant = new Plant(plantEnergy);
+            numberOfPlants++;
+            plants.put(new Vector2d(x, y), newJunglePlant);
+        }
+        //placing one plant in desert area (rest of the map)
+        do {
+            x = random.nextInt(mapWidth);
+            y = random.nextInt(mapHeight);
+        } while (isOccupied(new Vector2d(x, y)) || isOnJungle(x, y));
+        Plant newPlant = new Plant(plantEnergy);
+        numberOfPlants++;
+        plants.put(new Vector2d(x, y), newPlant);
     }
 
     public boolean isOnJungle(int x, int y) {
-        //TODO: implement
-        return false;
+        return jungleStartingPoint.x <= x && x < jungleStartingPoint.x + this.sizeOfJungleSquareSide
+                && jungleStartingPoint.y <= y && y < jungleStartingPoint.y + this.sizeOfJungleSquareSide;
     }
 
     public boolean isJungleFull() {
-        //TODO: implement
-        return false;
+        for (int x = jungleStartingPoint.x; x < jungleStartingPoint.x + this.sizeOfJungleSquareSide; x++) {
+            for (int y = jungleStartingPoint.y; y < jungleStartingPoint.y + this.sizeOfJungleSquareSide; y++) {
+                if(!isOccupied(new Vector2d(x, y))) return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -266,6 +292,7 @@ public class WorldMap implements IWorldMap {
         if(animals.containsKey(position)) return animals.get(position);
         else return plants.getOrDefault(position, null);
     }
+
     @Override
     public int getStartEnergy() {
         return 0;
@@ -293,7 +320,7 @@ public class WorldMap implements IWorldMap {
 
     @Override
     public boolean isOccupied(Vector2d position) {
-        if (animals.containsKey(position)) return true;
+        if (animals.containsKey(position) || plants.containsKey(position)) return true;
         return false;
     }
 
