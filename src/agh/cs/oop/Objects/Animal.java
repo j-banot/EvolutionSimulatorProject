@@ -11,6 +11,7 @@ import agh.cs.oop.Interfaces.IPositionChangeObserver;
 import agh.cs.oop.Interfaces.IWorldMap;
 import agh.cs.oop.Enums.MapDirection;
 import agh.cs.oop.Enums.MoveDirection;
+import agh.cs.oop.Tools.HelperMethods;
 
 import java.util.*;
 
@@ -106,13 +107,11 @@ public class Animal implements IMapElement {
 
     public boolean getIfDead() { return isDead;}
 
-    public MapDirection getMapDirection() {
-        return mapDirection;
-    }
+    public boolean getIfIsOffsprintOfTrackedAnimal() { return isOffspringOfTrackedAnimal; }
 
-    public Vector2d getPosition() {
-        return position;
-    }
+    public MapDirection getMapDirection() { return mapDirection; }
+
+    public Vector2d getPosition() { return position; }
 
     //Setters
     public void setPosition(Vector2d vector) {this.position = vector; }
@@ -125,6 +124,10 @@ public class Animal implements IMapElement {
 
     public void setDominantGenotypes() {
         //TODO: implement
+    }
+
+    public void setIfIsOffspringOfTrackedAnimal(boolean isOffspringOfTrackedAnimal) {
+        this.isOffspringOfTrackedAnimal = isOffspringOfTrackedAnimal;
     }
 
     public void changeEnergy(double difference) { this.energy += difference; }
@@ -147,14 +150,14 @@ public class Animal implements IMapElement {
             case FORWARD:
                 Vector2d tmpPosition = position.add(mapDirection.toUnitVector());
                 if (map.canMoveTo(tmpPosition)) {
-                    positionChanged(position, tmpPosition);
+                    notifyPositionChanged(position, tmpPosition);
                     position = tmpPosition;
                 }
                 break;
             case BACKWARD:
                 tmpPosition = position.subtract(mapDirection.toUnitVector());
                 if (map.canMoveTo(tmpPosition)) {
-                    positionChanged(position, tmpPosition);
+                    notifyPositionChanged(position, tmpPosition);
                     position = tmpPosition;
                 }
                 break;
@@ -193,8 +196,69 @@ public class Animal implements IMapElement {
         return null;
     }
 
+    public int[] getGenesFromParents(Animal parentA, Animal parentB) {
+
+        int[] childGenes = new int[32];
+        Random random = new Random();
+        int firstBreak, secondBreak;
+        firstBreak = HelperMethods.getRandomNumberFromRange(2, 31);
+        secondBreak = HelperMethods.getRandomNumberFromRange(firstBreak+1, 31);
+
+        for (int i = 0; i < 32; i++) {
+            if (i < firstBreak || i >= secondBreak) childGenes[i] = parentA.getGenes()[i];
+            else {
+                childGenes[i] = parentB.getGenes()[i];
+            }
+        }
+        Arrays.sort(childGenes);
+        // checking if children have all type of genes
+        int current;
+        int expected = 0;
+        int i = 0;
+        while(i < 32){
+            current = childGenes[i];
+            if(current == expected){
+                expected++;
+            }
+            else{
+                int indexToChange = random.nextInt(32);
+                childGenes[indexToChange] = expected;
+                Arrays.sort(childGenes);
+                i = 0;
+                current = childGenes[0];
+                expected = 0;
+            }
+            i++;
+            // skip checking same values
+            while( i < 32 && childGenes[i] == current){
+                i++;
+            }
+        }
+
+        return null;
+    }
+
     public static Animal reproduce (Animal parentA, Animal parentB) {
-        //TODO: implement
+        double parentAEnergy = parentA.getEnergy();
+        double parentBEnergy = parentB.getEnergy();
+        if (parentA.getEnergy() >= 0.5 * parentA.getStartEnergy()
+            && parentB.getEnergy() >= 0.5 * parentB.getStartEnergy()) {
+
+            double childEnergy = 0.25 * parentAEnergy + 0.25 * parentBEnergy;
+            parentA.changeEnergy(-0.25 * parentAEnergy);
+            parentB.changeEnergy(-0.25 * parentBEnergy);
+
+            parentA.numberOfChildren++;
+            parentB.numberOfChildren++;
+
+            int[] childGenes;
+            childGenes = parentA.getGenesFromParents(parentA, parentB);
+            Animal child = new Animal(parentA.map, parentA.getPosition(), childGenes);
+            child.setEnergy(childEnergy);
+            child.setIfIsOffspringOfTrackedAnimal(parentA.isOffspringOfTrackedAnimal
+                                                  || parentB.isOffspringOfTrackedAnimal);
+            return child;
+        }
         return null;
     }
 
@@ -217,7 +281,7 @@ public class Animal implements IMapElement {
         observers.add(observer);
     }
 
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition){
+    public void notifyPositionChanged(Vector2d oldPosition, Vector2d newPosition){
         for(IPositionChangeObserver o: observers){
             o.positionChanged(oldPosition, newPosition, this);
         }
