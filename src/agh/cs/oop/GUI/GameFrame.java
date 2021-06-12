@@ -30,13 +30,14 @@ public class GameFrame extends JFrame implements ActionListener{
     private void initializeLayout() throws IOException {
         //TODO: documentation why such elements were used
         //this.add(statisticsPanel, BorderLayout.LINE_START);
-        this.add(gamePanel, BorderLayout.LINE_END);
+        //this.add(gamePanel, BorderLayout.LINE_END);
+        this.add(gamePanel);
         setTitle(Constants.TITLE);
         pack();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         //TODO: CHECK!
         setLocationRelativeTo(null);
-        setResizable(false);
+        setResizable(true);
         setVisible(true);
     }
 

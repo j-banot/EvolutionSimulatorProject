@@ -1,11 +1,11 @@
 {
-  "numberOfSquaresX": 100,
-  "numberOfSquaresY": 100,
+  "numberOfSquaresX": 10,
+  "numberOfSquaresY": 10,
   "numberOfMaps": 1,
   "startEnergy": 100,
-  "numberOfAnimals": 4,
+  "numberOfAnimals": 5,
   "moveEnergy": 1,
-  "sizeOfJungleSquare": 10,
+  "sizeOfJungleSquare": 3,
   "plantEnergy": 10,
   "gameSpeed": 75
 }
