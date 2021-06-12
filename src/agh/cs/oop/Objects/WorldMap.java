@@ -13,7 +13,7 @@ public class WorldMap implements IWorldMap {
     protected int moveEnergy;
     protected int plantEnergy;
     protected Vector2d jungleStartingPoint;
-    protected int sizeOfJungleSquareSide;
+    protected int sizeOfJungleSquare;
     protected Map<Vector2d, ArrayList<Animal>> animals = new HashMap<>();
     protected Map<Vector2d, Plant> plants = new HashMap<>();
     protected int numberOfAnimals;
@@ -28,7 +28,7 @@ public class WorldMap implements IWorldMap {
     protected Vector2d mapStartPoint = new Vector2d(0,0);
     protected Vector2d mapEndPoint;
 
-    public WorldMap(int mapHeight, int mapWidth, int baseEnergy, int moveEnergy, int plantEnergy, int sizeOfJungleSquareSide) {
+    public WorldMap(int mapHeight, int mapWidth, int baseEnergy, int moveEnergy, int plantEnergy, int sizeOfJungleSquare) {
         this.day = 0;
         this.mapHeight = mapHeight;
         this.mapWidth = mapWidth;
@@ -36,7 +36,7 @@ public class WorldMap implements IWorldMap {
         this.baseEnergy = baseEnergy;
         this.moveEnergy = moveEnergy;
         this.plantEnergy = plantEnergy;
-        this.sizeOfJungleSquareSide = sizeOfJungleSquareSide;
+        this.sizeOfJungleSquare = sizeOfJungleSquare;
         setJungle();
         this.allAnimalsAreDead = false;
     }
@@ -74,9 +74,9 @@ public class WorldMap implements IWorldMap {
 
     //Setters
     public void setJungle() {
-        this.sizeOfJungleSquareSide = (int) (this.mapHeight * 0.4);
-        int x = (int) ((this.mapWidth / 2) - (this.sizeOfJungleSquareSide / 2));
-        int y = (int) ((this.mapHeight / 2) - (this.sizeOfJungleSquareSide / 2));
+        this.sizeOfJungleSquare = (int) (this.mapHeight * 0.4);
+        int x = (int) ((this.mapWidth / 2) - (this.sizeOfJungleSquare / 2));
+        int y = (int) ((this.mapHeight / 2) - (this.sizeOfJungleSquare / 2));
         this.jungleStartingPoint = new Vector2d(x, y);
     }
 
@@ -254,8 +254,8 @@ public class WorldMap implements IWorldMap {
         //placing one plant in jungle area
         if (!isJungleFull()) {
             do {
-                x = random.nextInt(sizeOfJungleSquareSide);
-                y = random.nextInt(sizeOfJungleSquareSide);
+                x = random.nextInt(sizeOfJungleSquare);
+                y = random.nextInt(sizeOfJungleSquare);
                 x += jungleStartingPoint.x;
                 y += jungleStartingPoint.y;
             } while (isOccupied(new Vector2d(x, y)));
@@ -274,13 +274,13 @@ public class WorldMap implements IWorldMap {
     }
 
     public boolean isOnJungle(int x, int y) {
-        return jungleStartingPoint.x <= x && x < jungleStartingPoint.x + this.sizeOfJungleSquareSide
-                && jungleStartingPoint.y <= y && y < jungleStartingPoint.y + this.sizeOfJungleSquareSide;
+        return jungleStartingPoint.x <= x && x < jungleStartingPoint.x + this.sizeOfJungleSquare
+                && jungleStartingPoint.y <= y && y < jungleStartingPoint.y + this.sizeOfJungleSquare;
     }
 
     public boolean isJungleFull() {
-        for (int x = jungleStartingPoint.x; x < jungleStartingPoint.x + this.sizeOfJungleSquareSide; x++) {
-            for (int y = jungleStartingPoint.y; y < jungleStartingPoint.y + this.sizeOfJungleSquareSide; y++) {
+        for (int x = jungleStartingPoint.x; x < jungleStartingPoint.x + this.sizeOfJungleSquare; x++) {
+            for (int y = jungleStartingPoint.y; y < jungleStartingPoint.y + this.sizeOfJungleSquare; y++) {
                 if(!isOccupied(new Vector2d(x, y))) return false;
             }
         }

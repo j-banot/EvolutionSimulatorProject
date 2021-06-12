@@ -14,7 +14,7 @@ public class Constants {
     public static int NUMBER_OF_ANIMALS;
     public static int MOVE_ENERGY;
     public static int PLANT_ENERGY;
-    public static int JUNGLE_DESERT_RATIO;
+    public static int SIZE_OF_JUNGLE_SQUARE;
 
     //Dinosaur level based on it's energy, Level 1 - lowest, Level 4 - highest
     public static int LEVEL1; //White Dino
