@@ -15,6 +15,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 public class GamePanel extends JPanel implements MouseListener {
 
     private WorldMap map;
@@ -61,31 +63,39 @@ public class GamePanel extends JPanel implements MouseListener {
         for (int x = 0; x < Constants.NUMBER_OF_SQUARES_X; x++) {
             for (int y = 0; y < Constants.NUMBER_OF_SQUARES_Y; y++) {
                 if (!map.isOnJungle(x, y)) {
-                    if (!map.isOccupied(new Vector2d(x, y))) mapGrid[x][y] = graphics.getSAND_SQUARE();
+                    if (!map.isOccupied(new Vector2d(x, y))) {
+                        mapGrid[x][y] = graphics.getSAND_SQUARE();
+                    }
                     else if (map.objectAt(new Vector2d(x, y)) instanceof Plant) {
                         mapGrid[x][y] = graphics.getPLANT_ON_SAND();
                     } else {
-                        ArrayList tmpList = (ArrayList) map.objectAt(new Vector2d(x, y));
-                        Animal tmpAnimal = (Animal) tmpList.get(0);
+                        //ArrayList tmpList = (ArrayList) map.objectAt(new Vector2d(x, y));
+                        //mapGrid[x][y] = graphics.getSAND_SQUARE();
+                        Animal tmpAnimal = (Animal) map.objectAt(new Vector2d(x, y));
                         double energy = tmpAnimal.getEnergy();
                         if (energy < Constants.LEVEL1) mapGrid[x][y] = graphics.getWHITE_DINO_ON_SAND();
                         else if (energy < Constants.LEVEL2) mapGrid[x][y] = graphics.getBLUE_DINO_ON_SAND();
                         else if (energy < Constants.LEVEL3) mapGrid[x][y] = graphics.getRED_DINO_ON_SAND();
                         else mapGrid[x][y] = graphics.getPINK_DINO_ON_SAND();
+
                     }
                 }
                 else {
-                    if (!map.isOccupied(new Vector2d(x, y))) mapGrid[x][y] = graphics.getGRASS_SQUARE();
-                    else if (map.objectAt(new Vector2d(x, y)) instanceof Plant)
+                    if (!map.isOccupied(new Vector2d(x, y))) {
+                        mapGrid[x][y] = graphics.getGRASS_SQUARE();
+                    }
+                    else if (map.objectAt(new Vector2d(x, y)) instanceof Plant) {
                         mapGrid[x][y] = graphics.getPLANT_ON_GRASS();
-                    else {
-                        ArrayList tmpList = (ArrayList) map.objectAt(new Vector2d(x, y));
-                        Animal tmpAnimal = (Animal) tmpList.get(0);
+                    } else {
+                        //ArrayList tmpList = (ArrayList) map.objectAt(new Vector2d(x, y));
+                        //mapGrid[x][y] = graphics.getGRASS_SQUARE();
+                        Animal tmpAnimal = (Animal) map.objectAt(new Vector2d(x, y));
                         double energy = tmpAnimal.getEnergy();
                         if (energy < Constants.LEVEL1) mapGrid[x][y] = graphics.getWHITE_DINO_ON_GRASS();
                         else if (energy < Constants.LEVEL2) mapGrid[x][y] = graphics.getBLUE_DINO_ON_GRASS();
                         else if (energy < Constants.LEVEL3) mapGrid[x][y] = graphics.getRED_DINO_ON_GRASS();
                         else mapGrid[x][y] = graphics.getPINK_DINO_ON_GRASS();
+
                     }
                 }
             }
@@ -95,6 +105,25 @@ public class GamePanel extends JPanel implements MouseListener {
                 g.drawImage(mapGrid[x][y], x * sizeOfSquare, y * sizeOfSquare, sizeOfSquare, sizeOfSquare, null);
             }
         }
+    }
+
+    public void doOneLoop() {
+        update();
+        repaint(); // paintComponent method is going to be called
+//        if(this.trackedAnimal != null && isAnimalTracked && this.trackedAnimal.isDead() && !this.isDeadAnnounced){
+//            this.dayOfTrackedAnimalDeath = map.getDay();
+//            this.isDeadAnnounced = true;
+//            this.timer.stop();
+//            this.gameFrame.statisticsPanel.timerStop();
+//            showMessageDialog(null, "Tracked animal died on " + map.getDay() + " day [*]");
+//        }
+//        if(this.isAnimalTracked()){
+//            gameMainFrame.statisticsPanel.updateTrackedAnimalStats();
+//        }
+    }
+
+    private void update() {
+        map.nextDay();
     }
 
     @Override

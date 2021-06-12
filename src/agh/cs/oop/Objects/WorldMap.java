@@ -9,7 +9,7 @@ public class WorldMap implements IWorldMap {
     protected int day;
     protected int mapHeight;
     protected int mapWidth;
-    protected int baseEnergy;
+    protected int startEnergy;
     protected int moveEnergy;
     protected int plantEnergy;
     protected Vector2d jungleStartingPoint;
@@ -33,7 +33,7 @@ public class WorldMap implements IWorldMap {
         this.mapHeight = mapHeight;
         this.mapWidth = mapWidth;
         this.mapEndPoint = new Vector2d(mapWidth-1, mapHeight-1);
-        this.baseEnergy = baseEnergy;
+        this.startEnergy = baseEnergy;
         this.moveEnergy = moveEnergy;
         this.plantEnergy = plantEnergy;
         this.sizeOfJungleSquare = sizeOfJungleSquare;
@@ -48,7 +48,7 @@ public class WorldMap implements IWorldMap {
 
     public Map<Vector2d, Plant> getPlants() { return plants; }
 
-    public int getBaseEnergy() { return this.baseEnergy; }
+    public int getStartEnergy() { return this.startEnergy; }
 
     public int getNumberOfAnimals() { return numberOfAnimals; }
 
@@ -105,27 +105,13 @@ public class WorldMap implements IWorldMap {
         }
     }
 
-    //TODO: check if it is correct and try to use it
-    public boolean eatGrass (Animal animal) {
-        Iterator<Plant> grassIterator = plants.values().iterator();
-
-        while (grassIterator.hasNext()) {
-            if (grassIterator.next().getPosition().equals(animal.getPosition())) {
-                System.out.println("yumm");
-                grassIterator.remove();
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void nextDay() {
         this.day++;
-        //moveAll();
-        //eatPlants();
+        moveAll();
+        eatPlants();
         updateStatsAndRemoveDeads();
         reproduceAndPlaceChildren();
-        //placeNewPlants();
+        placeNewPlants();
     }
 
     public void reproduceAndPlaceChildren() {
@@ -135,7 +121,9 @@ public class WorldMap implements IWorldMap {
             if (animalsAtPosition.size() > 1) {
                 Animal child = Animal.reproduce(twoStrongest.get(0), twoStrongest.get(1));
                 if (child != null) {
-                    if (child.getIfIsOffsprintOfTrackedAnimal()) numberOfOffspringOfTrackedAnimal++;
+                    if (child.getIfIsOffsprintOfTrackedAnimal()) {
+                        numberOfOffspringOfTrackedAnimal++;
+                    }
                     placeNewAnimal(twoStrongest.get(0).getPosition(), child);
                 }
             }
@@ -147,10 +135,9 @@ public class WorldMap implements IWorldMap {
         for (ArrayList<Animal> animalsAtPosition : tmpAnimalsCopy)  {
             ArrayList<Animal> twoStrongest = Animal.getTwoStrongest(animalsAtPosition);
             Vector2d position = animalsAtPosition.get(0).getPosition();
-            //TODO: not sure if it is correct
-            if (plants.containsKey(position)) {
+            if (plants.containsKey(position) && animalsAtPosition.size() > 0) {
                 Plant tmpPlant = plants.get(position);
-                if (twoStrongest.size() > 1) {
+                if (twoStrongest.size() > 1 && twoStrongest.get(0) == twoStrongest.get(1)) {
                     twoStrongest.get(0).changeEnergy(tmpPlant.getPlantEnergy() * 0.5);
                     twoStrongest.get(1).changeEnergy(tmpPlant.getPlantEnergy() * 0.5);
                 } else {
@@ -160,6 +147,7 @@ public class WorldMap implements IWorldMap {
                 plants.remove(position);
             }
         }
+
     }
 
     public void updateStatsAndRemoveDeads() {
@@ -169,7 +157,7 @@ public class WorldMap implements IWorldMap {
         ArrayList<ArrayList<Animal>> tmpAnimals = new ArrayList<>(animals.values());
         for (ArrayList<Animal> animalList : tmpAnimals) {
             ArrayList<Animal> tmpAnimalList = new ArrayList<>(animalList);
-            for (Animal tmpAnimal : animalList) {
+            for (Animal tmpAnimal : tmpAnimalList) {
                 if (tmpAnimal.getEnergy() <= 0) {
                     sumOfDeathAges += this.day - tmpAnimal.getDayOfBirth();
                     numberofDeaths++;
@@ -180,10 +168,10 @@ public class WorldMap implements IWorldMap {
                     currentSumOfAnimalsEnergy += tmpAnimal.getEnergy();
                     currentNumberOfChildren += tmpAnimal.getNumberOfChildren();
                     // TODO: check what is going on here
-                    ArrayList<Integer> tmpAnimalDominantGenotype = tmpAnimal.getDominantGenotypes();
-                    for (int i = 0; i < tmpAnimalDominantGenotype.size(); i++) {
-                        currentNumberOfDominantGenotypes[tmpAnimalDominantGenotype.get(i)]++;
-                    }
+//                    ArrayList<Integer> tmpAnimalDominantGenotype = tmpAnimal.getDominantGenotypes();
+//                    for (int i = 0; i < tmpAnimalDominantGenotype.size(); i++) {
+//                        currentNumberOfDominantGenotypes[tmpAnimalDominantGenotype.get(i)]++;
+//                    }
                 }
             }
         }
@@ -193,8 +181,9 @@ public class WorldMap implements IWorldMap {
     }
 
     public void moveAnimal(Animal animal) {
-        animal.setPosition(checkTargetPosition(animal.getPosition().add(animal.getMapDirection().toUnitVector()),
-                                               animal.getPosition()));
+//        animal.setPosition(checkTargetPosition(animal.getPosition().add(animal.getMapDirection().toUnitVector()),
+//                                               animal.getPosition()));
+        animal.setPosition(convertPositionToMap(animal.getPosition().add(animal.getMapDirection().toUnitVector())));
     }
 
     // check if animal can move to a new position, if not it stays in old position
@@ -205,16 +194,25 @@ public class WorldMap implements IWorldMap {
         }
     }
 
+    // converts position to map when we go outside it
+    private Vector2d convertPositionToMap(Vector2d position) {
+        int x = position.x < 0 ? this.mapWidth - 1 : position.x;
+        int y = position.y < 0 ? this.mapHeight - 1 : position.y;
+        x = x % (this.mapWidth);
+        y = y % (this.mapHeight);
+        return new Vector2d(x, y);
+    }
+
     public void moveAll() {
         ArrayList<ArrayList<Animal>> tmpAnimals = new ArrayList<>(animals.values());
         for (ArrayList<Animal> animalList : tmpAnimals) {
             ArrayList<Animal> tmpAnimalList = new ArrayList<>(animalList);
-            for (Animal tmpAnimal : animalList) {
+            for (Animal tmpAnimal : tmpAnimalList) {
                 tmpAnimal.changeDirection();
                 Vector2d oldPosition = tmpAnimal.getPosition();
                 moveAnimal(tmpAnimal);
                 Vector2d newPosition = tmpAnimal.getPosition();
-                if (!oldPosition.equals(newPosition)) tmpAnimal.notifyPositionChanged(oldPosition, newPosition);
+                tmpAnimal.notifyPositionChanged(oldPosition, newPosition);
                 tmpAnimal.changeEnergy(-this.moveEnergy);
             }
         }
@@ -222,30 +220,47 @@ public class WorldMap implements IWorldMap {
 
     //TODO: check if it is needed
     public boolean areAllAroundOccupied(Vector2d position) {
+        Animal tmpAnimal = new Animal(this);
         for (int i = 0; i < 8; i++) {
-            Vector2d tmpPosition = position.add(MapDirection.getDirectionFromValue(i).toUnitVector());
-            // if at least one is not occupied return false
-            if (!isOccupied(tmpPosition)) return false;
+            tmpAnimal.setPosition(position);
+            tmpAnimal.setDirection(MapDirection.getDirectionFromValue(i));
+            moveAnimal(tmpAnimal);
+            if (!isOccupied(tmpAnimal.getPosition())) {
+                return false;
+            }
         }
         return true;
     }
 
     //TODO: unit test
     public void placeNewAnimal(Vector2d parentPosition, Animal newAnimal) {
-        Vector2d childPosition = null;
-        for (int i = 0; i < 8; i++) {
-            Vector2d tmpPosition = parentPosition.add(MapDirection.getDirectionFromValue(i).toUnitVector());
-            if (!isOccupied(tmpPosition)) {
-                childPosition = tmpPosition;
-                putAnimalToHashMap(childPosition, newAnimal);
-                return;
-            }
+        if (!areAllAroundOccupied(parentPosition)) {
+            do {
+                newAnimal.setPosition(parentPosition);
+                //newAnimal.changeDirection();
+                moveAnimal(newAnimal);
+            } while (isOccupied(newAnimal.getPosition()));
+        } else {
+            newAnimal.setPosition(parentPosition);
+            newAnimal.changeDirection();
+            moveAnimal(newAnimal);
         }
-        Random random = new Random();
-        int option = random.nextInt(8);
-        Vector2d positionChange = MapDirection.getDirectionFromValue(option).toUnitVector();
-        childPosition = parentPosition.add(positionChange);
-        putAnimalToHashMap(childPosition, newAnimal);
+        putAnimalToHashMap(newAnimal.getPosition(), newAnimal);
+        //TODO: check
+//        Vector2d childPosition = null;
+//        for (int i = 0; i < 8; i++) {
+//            Vector2d tmpPosition = parentPosition.add(MapDirection.getDirectionFromValue(i).toUnitVector());
+//            if (!isOccupied(tmpPosition)) {
+//                childPosition = tmpPosition;
+//                putAnimalToHashMap(childPosition, newAnimal);
+//                return;
+//            }
+//        }
+//        Random random = new Random();
+//        int option = random.nextInt(8);
+//        Vector2d positionChange = MapDirection.getDirectionFromValue(option).toUnitVector();
+//        childPosition = parentPosition.add(positionChange);
+//        putAnimalToHashMap(childPosition, newAnimal);
     }
 
     public void placeNewPlants() {
@@ -289,23 +304,23 @@ public class WorldMap implements IWorldMap {
 
     @Override
     public Object objectAt(Vector2d position) {
-        if(animals.containsKey(position)) return animals.get(position);
-        else return plants.getOrDefault(position, null);
-    }
-
-    @Override
-    public int getStartEnergy() {
-        return 0;
+        ArrayList<Animal> animalArrayList = animals.get(position);
+        if (animalArrayList != null) {
+            return animalArrayList.get(0);
+        } else {
+            return plants.get(position);
+        }
+//        if(animals.containsKey(position)) return animals.get(position);
+//        else return plants.getOrDefault(position, null);
     }
 
     @Override
     public boolean placeAnimal(Animal animal) {
         if (!(this.isOccupied(animal.getPosition()))) {
-            animal.addObserver(animal.observer);
             putAnimalToHashMap(animal.getPosition(), animal);
             return true;
         }
-        throw new IllegalArgumentException("Element can not be placed on: " + animal.getPosition());
+        return false;
     }
 
     @Override
@@ -320,8 +335,7 @@ public class WorldMap implements IWorldMap {
 
     @Override
     public boolean isOccupied(Vector2d position) {
-        if (animals.containsKey(position) || plants.containsKey(position)) return true;
-        return false;
+        return (animals.get(position) != null || plants.get(position) != null );
     }
 
     @Override
@@ -329,28 +343,27 @@ public class WorldMap implements IWorldMap {
         return  position.follows(mapStartPoint) && position.precedes(mapEndPoint);
     }
 
-    @Override
-    public String toString() {
-        MapVisualizer map = new MapVisualizer(this);
-        return map.draw(new Vector2d(0,0), new Vector2d(mapWidth-1, mapHeight-1));
-    }
-
     //TODO: unit test
     public void putAnimalToHashMap(Vector2d position, Animal animal) {
-        ArrayList<Animal> tmpList = animals.get(position);
-        if (tmpList == null) tmpList = new ArrayList<Animal>();
-        tmpList.add(animal);
         numberOfAnimals++;
-        animals.put(position, tmpList);
+        ArrayList<Animal> tmpList = animals.get(position);
+        if (tmpList == null) {
+            tmpList = new ArrayList<Animal>();
+            animals.put(position, tmpList);
+        }
+        tmpList.add(animal);
     }
 
     //TODO: unit test
     public void removeAnimalFromHashMap(Vector2d position, Animal animal) {
+        numberOfAnimals--;
         ArrayList<Animal> tmpList = animals.get(position);
         if (tmpList != null) {
             tmpList.remove(animal);
-            numberOfAnimals--;
-            if (!tmpList.isEmpty()) animals.put(position, tmpList);
+            animals.put(position, tmpList);
+            if (tmpList.isEmpty()) {
+                animals.remove(position);
+            }
         }
     }
 

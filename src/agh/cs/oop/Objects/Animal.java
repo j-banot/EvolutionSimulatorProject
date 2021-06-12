@@ -28,10 +28,10 @@ public class Animal implements IMapElement {
     private double energy;
     private boolean isDead = false;
     private boolean isOffspringOfTrackedAnimal = false;
-    private MapDirection direction = MapDirection.NORTH;
+    private MapDirection mapDirection = MapDirection.NORTH;
     private Vector2d position = new Vector2d(2,2);
 
-    private MapDirection mapDirection;
+
     IPositionChangeObserver observer = null;
 
     //TODO: check if needed
@@ -120,7 +120,7 @@ public class Animal implements IMapElement {
 
     public void setEnergy(double energy) { this.energy = energy; }
 
-    public void setDirection(MapDirection direction) { this.direction = direction; }
+    public void setDirection(MapDirection direction) { this.mapDirection = direction; }
 
     public void setDominantGenotypes() {
         //TODO: implement
@@ -134,9 +134,9 @@ public class Animal implements IMapElement {
 
     public void changeDirection() {
         Random random = new Random();
-        int randomIndex = random.nextInt(this.genes.length);
-        int nextDirectionValue = this.genes[randomIndex];
-        this.direction = MapDirection.getDirectionFromValue(nextDirectionValue);
+        int turnValue = this.genes[random.nextInt(32)];
+        int resultValue = (this.mapDirection.getValueOfDirection() + turnValue) % 8;
+        this.mapDirection = MapDirection.getDirectionFromValue(resultValue);
     }
 
     public void move(MoveDirection moveDirection, IWorldMap map) {
@@ -150,14 +150,14 @@ public class Animal implements IMapElement {
             case FORWARD:
                 Vector2d tmpPosition = position.add(mapDirection.toUnitVector());
                 if (map.canMoveTo(tmpPosition)) {
-                    notifyPositionChanged(position, tmpPosition);
+                    //notifyPositionChanged(position, tmpPosition);
                     position = tmpPosition;
                 }
                 break;
             case BACKWARD:
                 tmpPosition = position.subtract(mapDirection.toUnitVector());
                 if (map.canMoveTo(tmpPosition)) {
-                    notifyPositionChanged(position, tmpPosition);
+                    //notifyPositionChanged(position, tmpPosition);
                     position = tmpPosition;
                 }
                 break;
@@ -200,12 +200,15 @@ public class Animal implements IMapElement {
 
         int[] childGenes = new int[32];
         Random random = new Random();
-        int firstBreak, secondBreak;
-        firstBreak = HelperMethods.getRandomNumberFromRange(2, 31);
-        secondBreak = HelperMethods.getRandomNumberFromRange(firstBreak+1, 31);
-
+        int firstBreakPoint, secondBreakPoint;
+        do {
+            firstBreakPoint = random.nextInt(32);
+            secondBreakPoint = random.nextInt(32);
+        } while (firstBreakPoint < secondBreakPoint);
         for (int i = 0; i < 32; i++) {
-            if (i < firstBreak || i >= secondBreak) childGenes[i] = parentA.getGenes()[i];
+            if(i < firstBreakPoint || i >= secondBreakPoint){
+                childGenes[i] = parentA.getGenes()[i];
+            }
             else {
                 childGenes[i] = parentB.getGenes()[i];
             }
@@ -234,8 +237,7 @@ public class Animal implements IMapElement {
                 i++;
             }
         }
-
-        return null;
+        return childGenes;
     }
 
     public static Animal reproduce (Animal parentA, Animal parentB) {
@@ -262,27 +264,12 @@ public class Animal implements IMapElement {
         return null;
     }
 
-    @Override
-    public String toString() {
-        switch (mapDirection) {
-            case NORTH:
-                return "N";
-            case SOUTH:
-                return "S";
-            case EAST:
-                return "E";
-            case WEST:
-                return "W";
-            default:
-                throw new IllegalStateException("Unexpected value: " + this);
-        }
-    }
     public void addObserver(IPositionChangeObserver observer){
         observers.add(observer);
     }
 
     public void notifyPositionChanged(Vector2d oldPosition, Vector2d newPosition){
-        for(IPositionChangeObserver o: observers){
+        for(IPositionChangeObserver o: observers) {
             o.positionChanged(oldPosition, newPosition, this);
         }
     }

@@ -19,7 +19,7 @@ public class GameFrame extends JFrame implements ActionListener{
     int xMargin;
     int yMargin;
     Timer timer;
-    //StatisticsPanel statisticsPanel;
+    StatisticsPanel statisticsPanel;
     GamePanel gamePanel;
 
     public GameFrame() throws IOException {
@@ -29,7 +29,8 @@ public class GameFrame extends JFrame implements ActionListener{
 
     private void initializeLayout() throws IOException {
         //TODO: documentation why such elements were used
-        //this.add(statisticsPanel, BorderLayout.LINE_START);
+        this.add(statisticsPanel, BorderLayout.LINE_START);
+        //TODO: check why BOREDER LAYOUT IS NOT WORKING CORRECTLY!
         //this.add(gamePanel, BorderLayout.LINE_END);
         this.add(gamePanel);
         setTitle(Constants.TITLE);
@@ -51,19 +52,19 @@ public class GameFrame extends JFrame implements ActionListener{
         map.placeNAnimalsOnMap(Constants.NUMBER_OF_ANIMALS);
         this.timer = new Timer(Constants.GAME_SPEED, this);
         this.gamePanel = new GamePanel(this.sizeOfSquare, this.xMargin, this.yMargin, map, this, timer);
-        //this.statisticsPanel = new StatisticsPanel(this.yMargin, this.timer, this.gamePanel, map);
+        this.statisticsPanel = new StatisticsPanel(this.gamePanel, map, this.timer, this.yMargin);
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //gamePanel.doOneLoop();
+        gamePanel.doOneLoop();
         if(map.getIfAllAnimalsAreDead()) {
             timer.stop();
             showMessageDialog(null, "All animals are dead!");
             //staisticsPanel.disableButtons();
         } else {
-            //statisticsPanel.updateMapStats();
+            statisticsPanel.updateMapStats();
         }
     }
 }

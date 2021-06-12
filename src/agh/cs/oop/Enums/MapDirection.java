@@ -17,22 +17,6 @@ public enum MapDirection {
     WEST,
     NORTHWEST;
 
-    //TODO: To be deleted
-    public String toString(){
-        switch(this) {
-            case NORTH:
-                return "Północ";
-            case SOUTH:
-                return "Południe";
-            case EAST:
-                return "Wschód";
-            case WEST:
-                return "Zachód";
-            default:
-                throw new IllegalStateException("Unexpected value: " + this);
-        }
-    }
-
     //clockwise order next direction
     public MapDirection next(){
         switch(this) {
