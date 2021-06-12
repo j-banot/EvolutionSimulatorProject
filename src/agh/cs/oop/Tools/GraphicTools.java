@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class ImageTools{
+public class GraphicTools {
     //TODO: docummentation, what is buffered image
     BufferedImage WHITE_DINO_ON_GRASS;
     BufferedImage BLUE_DINO_ON_GRASS;
@@ -22,7 +22,7 @@ public class ImageTools{
     BufferedImage PLANT_ON_GRASS;
     BufferedImage PLANT_ON_SAND;
 
-    public ImageTools() throws IOException {
+    public GraphicTools() throws IOException {
         WHITE_DINO_ON_GRASS = ImageIO.read(new File(Constants.WHITE_DINO_ON_GRASS_PATH));
         BLUE_DINO_ON_GRASS = ImageIO.read(new File(Constants.BLUE_DINO_ON_GRASS_PATH));
         RED_DINO_ON_GRASS = ImageIO.read(new File(Constants.RED_DINO_ON_GRASS_PATH));

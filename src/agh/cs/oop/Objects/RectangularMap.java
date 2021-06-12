@@ -9,4 +9,19 @@ public class RectangularMap extends AbstractWorldMap implements IPositionChangeO
         mapHeight = height;
         mapWidth = width;
     }
+
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition, Animal animal) {
+
+    }
+
+    @Override
+    public int getStartEnergy() {
+        return 0;
+    }
+
+    @Override
+    public int getDay() {
+        return 0;
+    }
 }

@@ -1,5 +1,11 @@
 package agh.cs.oop.Constants;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 public class Constants {
     public static final String TITLE = "Evolution Simulator";
     public static final int BOARD_WIDTH = 1000;
@@ -38,4 +44,40 @@ public class Constants {
     public static final String RED_DINO_ON_SAND_PATH = dinosPath + "RedDinoOnSand.png";
     public static final String PINK_DINO_ON_GRASS_PATH = dinosPath + "PinkDinoOnGrass.png";
     public static final String PINK_DINO_ON_SAND_PATH = dinosPath + "PinkDinoOnSand.png";
+
+    public static void getValueFromJSON() throws FileNotFoundException {
+        FileReader reader = new FileReader("src/agh/cs/oop/inputValues.json");
+        JsonParser jsonParser = new JsonParser();
+        Gson gson = new Gson();
+        InputValues startValue = gson.fromJson(jsonParser.parse(reader), InputValues.class);
+        initializeVariables(startValue);
+    }
+
+    public static void initializeVariables(InputValues inputValues) {
+        NUMBER_OF_SQUARES_X = inputValues.numberOfSquaresX;
+        NUMBER_OF_SQUARES_Y = inputValues.numberOfSquaresY;
+        NUMBER_OF_MAPS_TO_GENERATE = inputValues.numberOfMaps;
+        GAME_SPEED = inputValues.gameSpeed;
+        START_ENERGY = inputValues.startEnergy;
+        NUMBER_OF_ANIMALS = inputValues.numberOfAnimals;
+        MOVE_ENERGY = inputValues.moveEnergy;
+        PLANT_ENERGY = inputValues.plantEnergy;
+        SIZE_OF_JUNGLE_SQUARE = inputValues.sizeOfJungleSquare;
+        LEVEL1 = START_ENERGY / 2;
+        LEVEL2 = START_ENERGY;
+        LEVEL3 = (int) (1.5 * START_ENERGY);
+        LEVEL4 = 2 * START_ENERGY;
+    }
+
+    private class InputValues {
+        int numberOfSquaresX;
+        int numberOfSquaresY;
+        int numberOfMaps;
+        int startEnergy;
+        int numberOfAnimals;
+        int moveEnergy;
+        int sizeOfJungleSquare;
+        int plantEnergy;
+        int gameSpeed;
+    }
 }

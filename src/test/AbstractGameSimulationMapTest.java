@@ -4,7 +4,7 @@ import agh.cs.oop.Objects.Vector2d;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class AbstractWorldMapTest {
+public class AbstractGameSimulationMapTest {
     RectangularMap map = new RectangularMap(10, 10);
 
     @Test
