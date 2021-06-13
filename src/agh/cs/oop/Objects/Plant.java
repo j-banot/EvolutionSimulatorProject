@@ -1,8 +1,10 @@
 package agh.cs.oop.Objects;
 
+/**
+ * Plant class specifies behaviour of second type of object that can be placed on WorldMap besides Animal
+ */
+
 import agh.cs.oop.Interfaces.IMapElement;
-import agh.cs.oop.Interfaces.IPositionChangeObserver;
-import agh.cs.oop.Objects.Vector2d;
 
 public class Plant implements IMapElement {
 
@@ -11,10 +13,6 @@ public class Plant implements IMapElement {
 
     public Plant(int plantEnergy) {
         this.energy = plantEnergy;
-    }
-
-    public Plant(Vector2d initialPosition) {
-        this.position = initialPosition;
     }
 
     public Vector2d getPosition() {

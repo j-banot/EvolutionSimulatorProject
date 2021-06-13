@@ -1,9 +1,8 @@
 package agh.cs.oop.Objects;
 
-//TODO: descriptions and comments in the way shown below
-// /**
-// * Description
-// */
+/**
+ * Vector2d class defines behaviour of object that was used to model 2d world with coordinate system.
+ */
 
 import java.util.Objects;
 
@@ -11,6 +10,14 @@ public class Vector2d {
 
     final int x;
     final int y;
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 
     public Vector2d(int x, int y) {
         this.x = x;

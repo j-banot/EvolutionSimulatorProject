@@ -1,5 +1,10 @@
 package agh.cs.oop.Objects;
 
+/**
+ * One of the 2 main clases in the game. It defines World Map and specifies cooperation between
+ * objects instances of Animals and WorldMap object
+ */
+
 import agh.cs.oop.Enums.MapDirection;
 import agh.cs.oop.Interfaces.IWorldMap;
 
@@ -22,7 +27,6 @@ public class WorldMap implements IWorldMap {
     protected double sumOfDeathAges;
     protected int numberofDeaths;
     protected int numberOfChildern;
-    private int[] dominantGenotype; //??
     private int numberOfOffspringOfTrackedAnimal;
     private boolean allAnimalsAreDead;
     protected Vector2d mapStartPoint = new Vector2d(0,0);
@@ -65,12 +69,11 @@ public class WorldMap implements IWorldMap {
 
     public double getAverageNumberOfChildren(){ return (double) Math.round(numberOfChildern/numberOfAnimals); }
 
-    //TODO: implement??
-    public int[] getDominantGenotype() {
-        return dominantGenotype;
-    }
-
     public boolean getIfAllAnimalsAreDead() { return allAnimalsAreDead; }
+
+    public int getNumberOfOffspringOfTrackedAnimal() {
+        return numberOfOffspringOfTrackedAnimal;
+    }
 
     //Setters
     public void setJungle() {
@@ -86,10 +89,6 @@ public class WorldMap implements IWorldMap {
 
     public void setNumberOfChildren(int numberOfChildren) {
         this.numberOfChildern = numberOfChildren;
-    }
-
-    public void setNumberOfDominantGenotype(int[] dominantGenotype) {
-        this.dominantGenotype = dominantGenotype;
     }
 
     public void placeNAnimalsOnMap(int n) {
@@ -147,7 +146,6 @@ public class WorldMap implements IWorldMap {
                 plants.remove(position);
             }
         }
-
     }
 
     public void updateStatsAndRemoveDeads() {
@@ -167,17 +165,11 @@ public class WorldMap implements IWorldMap {
                 } else {
                     currentSumOfAnimalsEnergy += tmpAnimal.getEnergy();
                     currentNumberOfChildren += tmpAnimal.getNumberOfChildren();
-                    // TODO: check what is going on here
-//                    ArrayList<Integer> tmpAnimalDominantGenotype = tmpAnimal.getDominantGenotypes();
-//                    for (int i = 0; i < tmpAnimalDominantGenotype.size(); i++) {
-//                        currentNumberOfDominantGenotypes[tmpAnimalDominantGenotype.get(i)]++;
-//                    }
                 }
             }
         }
         setSumOfAnimalsEnergy(currentSumOfAnimalsEnergy);
         setNumberOfChildren(currentNumberOfChildren);
-        setNumberOfDominantGenotype(currentNumberOfDominantGenotypes);
     }
 
     public void moveAnimal(Animal animal) {
@@ -370,5 +362,8 @@ public class WorldMap implements IWorldMap {
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition, Animal animal) {
         removeAnimalFromHashMap(oldPosition, animal);
         putAnimalToHashMap(newPosition, animal);
+    }
+
+    public void removeOffspringOfTrackedAnimal() {
     }
 }

@@ -21,6 +21,7 @@ public class GraphicTools {
     BufferedImage SAND_SQUARE;
     BufferedImage PLANT_ON_GRASS;
     BufferedImage PLANT_ON_SAND;
+    BufferedImage TEST_DINO;
 
     public GraphicTools() throws IOException {
         WHITE_DINO_ON_GRASS = ImageIO.read(new File(Constants.WHITE_DINO_ON_GRASS_PATH));

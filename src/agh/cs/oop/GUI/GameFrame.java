@@ -1,21 +1,23 @@
 package agh.cs.oop.GUI;
 
+/**
+ * Class implementing main frame that is root for other GUI components
+ */
+
 import agh.cs.oop.Constants.Constants;
 import agh.cs.oop.Objects.WorldMap;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class GameFrame extends JFrame implements ActionListener{
 
     WorldMap map;
+    // size of grid square
     int sizeOfSquare;
-    //TODO: docummentation!
     int xMargin;
     int yMargin;
     Timer timer;
@@ -28,15 +30,11 @@ public class GameFrame extends JFrame implements ActionListener{
     }
 
     private void initializeLayout() throws IOException {
-        //TODO: documentation why such elements were used
         this.add(statisticsPanel, BorderLayout.LINE_START);
-        //TODO: check why BOREDER LAYOUT IS NOT WORKING CORRECTLY!
-        //this.add(gamePanel, BorderLayout.LINE_END);
-        this.add(gamePanel);
+        this.add(gamePanel, BorderLayout.LINE_END);
         setTitle(Constants.TITLE);
         pack();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //TODO: CHECK!
         setLocationRelativeTo(null);
         setResizable(true);
         setVisible(true);
@@ -62,7 +60,7 @@ public class GameFrame extends JFrame implements ActionListener{
         if(map.getIfAllAnimalsAreDead()) {
             timer.stop();
             showMessageDialog(null, "All animals are dead!");
-            //staisticsPanel.disableButtons();
+            statisticsPanel.disableButtons();
         } else {
             statisticsPanel.updateMapStats();
         }

@@ -1,17 +1,13 @@
 package agh.cs.oop.Objects;
 
-//TODO: descriptions and comments in the way shown below
-// /**
-// * Description
-// */
-
+/**
+ * One of the 2 main clases in the game. It specifies behaviour of Animals
+ */
 
 import agh.cs.oop.Interfaces.IMapElement;
 import agh.cs.oop.Interfaces.IPositionChangeObserver;
 import agh.cs.oop.Interfaces.IWorldMap;
 import agh.cs.oop.Enums.MapDirection;
-import agh.cs.oop.Enums.MoveDirection;
-import agh.cs.oop.Tools.HelperMethods;
 
 import java.util.*;
 
@@ -21,28 +17,15 @@ public class Animal implements IMapElement {
     private IWorldMap map;
     private int dayOfBirth;
     private int numberOfChildren;
-    private ArrayList<Integer> dominantGenotypes;
     private int[] genes;
-    int[] genesDistribution = new int[100];
     private int startEnergy;
     private double energy;
     private boolean isDead = false;
-    private boolean isOffspringOfTrackedAnimal = false;
+    private boolean setIsOffspringOfTrackedAnimal = false;
     private MapDirection mapDirection = MapDirection.NORTH;
     private Vector2d position = new Vector2d(2,2);
 
-
     IPositionChangeObserver observer = null;
-
-    //TODO: check if needed
-    public Animal(IWorldMap map, Vector2d initialPosition, MapDirection direction) {
-        mapDirection = direction;
-        position = initialPosition;
-    }
-
-    public Animal() {
-
-    }
 
     public Animal(IWorldMap map){
         this.map = map;
@@ -52,7 +35,6 @@ public class Animal implements IMapElement {
         this.energy = this.getStartEnergy();
         this.genes = generateRandomGenes();
         addObserver(map);
-        setDominantGenotypes();
     }
 
     public Animal(IWorldMap map, Vector2d initialPosition){
@@ -64,7 +46,6 @@ public class Animal implements IMapElement {
         this.genes = generateRandomGenes();
         addObserver(map);
         this.setPosition(initialPosition);
-        setDominantGenotypes();
     }
 
     public Animal(IWorldMap map, Vector2d initialPosition, int[] genes){
@@ -76,7 +57,6 @@ public class Animal implements IMapElement {
         addObserver(map);
         this.setPosition(initialPosition);
         this.genes = genes;
-        setDominantGenotypes();
     }
 
     //Getters
@@ -87,8 +67,6 @@ public class Animal implements IMapElement {
     public double getEnergy() { return this.energy; }
 
     public int getNumberOfChildren() { return numberOfChildren; }
-
-    public ArrayList<Integer> getDominantGenotypes() { return dominantGenotypes; }
 
     private int[] generateRandomGenes(){
         Random random = new Random();
@@ -107,7 +85,7 @@ public class Animal implements IMapElement {
 
     public boolean getIfDead() { return isDead;}
 
-    public boolean getIfIsOffsprintOfTrackedAnimal() { return isOffspringOfTrackedAnimal; }
+    public boolean getIfIsOffsprintOfTrackedAnimal() { return setIsOffspringOfTrackedAnimal; }
 
     public MapDirection getMapDirection() { return mapDirection; }
 
@@ -122,12 +100,8 @@ public class Animal implements IMapElement {
 
     public void setDirection(MapDirection direction) { this.mapDirection = direction; }
 
-    public void setDominantGenotypes() {
-        //TODO: implement
-    }
-
-    public void setIfIsOffspringOfTrackedAnimal(boolean isOffspringOfTrackedAnimal) {
-        this.isOffspringOfTrackedAnimal = isOffspringOfTrackedAnimal;
+    public void setIsOffspringOfTrackedAnimal(boolean isOffspringOfTrackedAnimal) {
+        this.setIsOffspringOfTrackedAnimal = isOffspringOfTrackedAnimal;
     }
 
     public void changeEnergy(double difference) { this.energy += difference; }
@@ -137,33 +111,6 @@ public class Animal implements IMapElement {
         int turnValue = this.genes[random.nextInt(32)];
         int resultValue = (this.mapDirection.getValueOfDirection() + turnValue) % 8;
         this.mapDirection = MapDirection.getDirectionFromValue(resultValue);
-    }
-
-    public void move(MoveDirection moveDirection, IWorldMap map) {
-        switch(moveDirection) {
-            case RIGHT:
-                mapDirection = mapDirection.next();
-                break;
-            case LEFT:
-                mapDirection = mapDirection.previous();
-                break;
-            case FORWARD:
-                Vector2d tmpPosition = position.add(mapDirection.toUnitVector());
-                if (map.canMoveTo(tmpPosition)) {
-                    //notifyPositionChanged(position, tmpPosition);
-                    position = tmpPosition;
-                }
-                break;
-            case BACKWARD:
-                tmpPosition = position.subtract(mapDirection.toUnitVector());
-                if (map.canMoveTo(tmpPosition)) {
-                    //notifyPositionChanged(position, tmpPosition);
-                    position = tmpPosition;
-                }
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + this);
-        }
     }
 
     public static ArrayList<Animal> getTwoStrongest(ArrayList<Animal> animals){
@@ -257,8 +204,8 @@ public class Animal implements IMapElement {
             childGenes = parentA.getGenesFromParents(parentA, parentB);
             Animal child = new Animal(parentA.map, parentA.getPosition(), childGenes);
             child.setEnergy(childEnergy);
-            child.setIfIsOffspringOfTrackedAnimal(parentA.isOffspringOfTrackedAnimal
-                                                  || parentB.isOffspringOfTrackedAnimal);
+            child.setIsOffspringOfTrackedAnimal(parentA.setIsOffspringOfTrackedAnimal
+                                                  || parentB.setIsOffspringOfTrackedAnimal);
             return child;
         }
         return null;

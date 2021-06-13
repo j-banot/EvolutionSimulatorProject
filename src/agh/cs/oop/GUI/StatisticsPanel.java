@@ -24,26 +24,23 @@ public class StatisticsPanel extends JPanel{
     private JButton stopBtn;
     private JButton nextDayBtn;
     private JButton saveStatsBtn;
-    private JButton markDominantGenotypeBtn;
     private JButton trackAnimalBtn;
     private StopActionListener stopActionListener;
     private StartActionListener startActionListener;
     private NextDayActionListener nextDayActionListener;
     private SaveStatsActionListener saveStatsActionListener;
-    // private MarkDominantGenotypeActionListener markDominantGenotypeActionListener;
-    // private TrackAnimalActionListener trackAnimalActionListener;
+    private TrackAnimalActionListener trackAnimalActionListener;
     private JLabel mapStatisticsTitle;
     private JLabel dayInfo;
     private JLabel numberOfAnimalsInfo;
     private JLabel numberOfPlantsInfo;
-    //private JLabel dominantGenotypesInfo;
     private JLabel averageEnergyInfo;
     private JLabel averageAgeOfDeathsInfo;
     private JLabel averageNumberOfChildrenInfo;
-    //private JLabel trackedAnimalStatisticsTitle;
-    //private JLabel numberOfChildren;
-    //private JLabel numberOfOffspring;
-    //private JLabel deathDate;
+    private JLabel trackedAnimalStatisticsTitle;
+    private JLabel numberOfChildren;
+    private JLabel numberOfOffspring;
+    private JLabel deathDate;
 
 
     public StatisticsPanel(GamePanel gamePanel, WorldMap map, Timer timer, int yMargin) {
@@ -62,15 +59,12 @@ public class StatisticsPanel extends JPanel{
         startActionListener = new StartActionListener();
         nextDayActionListener = new NextDayActionListener();
         saveStatsActionListener = new SaveStatsActionListener();
-        //markDominantGenotypeActionListener = new MarkDominantGenotypeActionListener();
-        //trackAnimalActionListener = new TrackAnimalActionListener();
+        trackAnimalActionListener = new TrackAnimalActionListener();
 
         stopBtn = new JButton("STOP");
         startBtn = new JButton("START");
         nextDayBtn = new JButton("NEXT DAY");
         saveStatsBtn = new JButton("SAVE STATS");
-        markDominantGenotypeBtn = new JButton("<html><center> MARK DOMINANT GENOTYPE</center></html>");
-        markDominantGenotypeBtn.setHorizontalAlignment(SwingConstants.CENTER);
         trackAnimalBtn = new JButton("TRACK ANIMAL");
 
         mapStatisticsTitle = new JLabel("MAP STATS");
@@ -82,10 +76,10 @@ public class StatisticsPanel extends JPanel{
         averageEnergyInfo = new JLabel("  Average animal energy: " + map.getAverageEnergy());
         averageAgeOfDeathsInfo = new JLabel("  Average age of deaths: " + map.getAverageDeathAge());
         averageNumberOfChildrenInfo = new JLabel("  Average number of children: " + map.getAverageNumberOfChildren());
-        //trackedAnimalStatisticsTitle = new JLabel("");
-        //numberOfChildren = new JLabel("");
-        //numberOfOffspring = new JLabel("");
-        //deathDate = new JLabel("");
+        trackedAnimalStatisticsTitle = new JLabel("");
+        numberOfChildren = new JLabel("");
+        numberOfOffspring = new JLabel("");
+        deathDate = new JLabel("");
 
         //TODO: change font
         Font titleFont = new Font("Courier", Font.BOLD,22);
@@ -94,14 +88,13 @@ public class StatisticsPanel extends JPanel{
         dayInfo.setFont(font);
         numberOfAnimalsInfo.setFont(font);
         numberOfPlantsInfo.setFont(font);
-        //dominantGenotypesInfo.setFont(font);
         averageEnergyInfo.setFont(font);
         averageAgeOfDeathsInfo.setFont(font);
         averageNumberOfChildrenInfo.setFont(font);
-        //trackedAnimalStatisticsTitle.setFont(titleFont);
-        //numberOfChildren.setFont(font);
-        //numberOfOffspring.setFont(font);
-        //deathDate.setFont(font);
+        trackedAnimalStatisticsTitle.setFont(titleFont);
+        numberOfChildren.setFont(font);
+        numberOfOffspring.setFont(font);
+        deathDate.setFont(font);
     }
 
     private void initializeLayout() {
@@ -121,26 +114,23 @@ public class StatisticsPanel extends JPanel{
 
         stopBtn.setEnabled(false);
         saveStatsBtn.setEnabled(false);
-        markDominantGenotypeBtn.setEnabled(false);
 
         mapStats.add(mapStatisticsTitle);
         mapStats.add(dayInfo);
         mapStats.add(numberOfAnimalsInfo);
         mapStats.add(numberOfPlantsInfo);
-        //mapStats.add(dominantGenotypesInfo);
         mapStats.add(averageEnergyInfo);
         mapStats.add(averageAgeOfDeathsInfo);
         mapStats.add(averageNumberOfChildrenInfo);
 
-//        trackedAnimal.add(trackedAnimalStatisticsTitle);
-//        trackedAnimal.add(numberOfChildren);
-//        trackedAnimal.add(numberOfOffspring);
-//        trackedAnimal.add(deathDate);
+        trackedAnimal.add(trackedAnimalStatisticsTitle);
+        trackedAnimal.add(numberOfChildren);
+        trackedAnimal.add(numberOfOffspring);
+        trackedAnimal.add(deathDate);
 
         buttons.add(startBtn);
         buttons.add(stopBtn);
         buttons.add(nextDayBtn);
-        buttons.add(markDominantGenotypeBtn);
         buttons.add(saveStatsBtn);
         buttons.add(trackAnimalBtn);
 
@@ -152,8 +142,7 @@ public class StatisticsPanel extends JPanel{
         startBtn.addActionListener(startActionListener);
         nextDayBtn.addActionListener(nextDayActionListener);
         saveStatsBtn.addActionListener(saveStatsActionListener);
-        //markDominantGenotypeBtn.addActionListener(markDominantGenotypeActionListener);
-        //trackAnimalBtn.addActionListener(trackAnimalActionListener);
+        trackAnimalBtn.addActionListener(trackAnimalActionListener);
     }
 
     private class StopActionListener implements ActionListener {
@@ -167,7 +156,6 @@ public class StatisticsPanel extends JPanel{
                 nextDayBtn.setEnabled(true);
                 saveStatsBtn.setEnabled(true);
                 trackAnimalBtn.setEnabled(true);
-                markDominantGenotypeBtn.setEnabled(true);
             }
         }
     }
@@ -183,7 +171,6 @@ public class StatisticsPanel extends JPanel{
                 nextDayBtn.setEnabled(false);
                 saveStatsBtn.setEnabled(false);
                 trackAnimalBtn.setEnabled(false);
-                markDominantGenotypeBtn.setEnabled(true);
             }
         }
     }
@@ -195,7 +182,6 @@ public class StatisticsPanel extends JPanel{
                 gamePanel.doOneLoop();
                 updateMapStats();
                 saveStatsBtn.setEnabled(true);
-                markDominantGenotypeBtn.setEnabled(true);
             }
         }
     }
@@ -207,7 +193,7 @@ public class StatisticsPanel extends JPanel{
             StatsToSave statsToSave = new StatsToSave(Constants.NUMBER_OF_SQUARES_X, Constants.NUMBER_OF_SQUARES_Y,
                     Constants.START_ENERGY, Constants.NUMBER_OF_ANIMALS, Constants.MOVE_ENERGY, Constants.PLANT_ENERGY,
                     Constants.SIZE_OF_JUNGLE_SQUARE, map.getDay(), map.getNumberOfAnimals(), map.getNumberOfPlants(),
-                    map.getDominantGenotype(), map.getAverageEnergy(), map.getAverageDeathAge(), map.getAverageNumberOfChildren());
+                    map.getAverageEnergy(), map.getAverageDeathAge(), map.getAverageNumberOfChildren());
             try {
                 String jsonString = gson.toJson(statsToSave);
                 String userHomeFolder = System.getProperty("user.home");
@@ -221,6 +207,51 @@ public class StatisticsPanel extends JPanel{
                 e2.printStackTrace();
             }
         }
+    }
+
+    private class TrackAnimalActionListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (!isRunning && !gamePanel.isAnimalTracked()) {
+                showMessageDialog(null, "Select animal to track!");
+                gamePanel.toggleIsFindAnimalToTrackModeOn();
+            }
+            if (!gamePanel.isAnimalTracked()) {
+                trackAnimalBtn.setText("STOP TRACKING");
+            } else {
+                map.removeOffspringOfTrackedAnimal();
+                resetTrackedAnimalStats();
+                gamePanel.setFindAnimalToTrackModeON(false);
+                gamePanel.isFindAnimalToTrackModeOn();
+                gamePanel.setTrackedAnimal(null);
+                gamePanel.repaint();
+                trackAnimalBtn.setText("TRACK ANIMAL");
+            }
+        }
+    }
+
+    private void resetTrackedAnimalStats() {
+        trackedAnimalStatisticsTitle.setText("");
+        numberOfChildren.setText("");
+        numberOfOffspring.setText("");
+        deathDate.setText("");
+    }
+
+    public void updateTrackedAnimalStats() {
+        trackedAnimalStatisticsTitle.setText("TRACKED ANIMAL STATS");
+        trackedAnimalStatisticsTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        int numberNewChildren = gamePanel.getTrackedAnimal().getNumberOfChildren() - gamePanel.getNumberOfChildrenWhenTrackingStarted();
+        numberOfChildren.setText("  Number of new children: " + numberNewChildren);
+        numberOfOffspring.setText("  Number of new offspring: " + map.getNumberOfOffspringOfTrackedAnimal());
+        if(!gamePanel.getTrackedAnimal().getIfDead()){
+            deathDate.setText("");
+        }
+        else{
+            deathDate.setText("  Animal died on " + gamePanel.getDayOfTrackedAnimalDeath() + " day");
+        }
+    }
+
+    public void timerStop() {
     }
 
     public static class StatsToSave{
@@ -237,14 +268,13 @@ public class StatisticsPanel extends JPanel{
         int day;
         int numberOfAnimals;
         int numberOfGrasses;
-        int dominantGenotype;
         double averageEnergy;
         double averageAgeOfDeaths;
         double averageNumberOfChildren;
 
         public StatsToSave(int numberOfX, int numberOfTilesY, int startAnimalEnergy, int numberOfStartAnimals,
                            int moveEnergy, int plantEnergy, double jungleRatio, int day, int numberOfAnimals,
-                           int numberOfGrasses, int[] dominantGenotype, double averageEnergy, double averageAgeOfDeaths,
+                           int numberOfGrasses, double averageEnergy, double averageAgeOfDeaths,
                            double averageNumberOfChildren) {
             this.numberOfX = numberOfX;
             this.numberOfTilesY = numberOfTilesY;
@@ -256,7 +286,6 @@ public class StatisticsPanel extends JPanel{
             this.day = day;
             this.numberOfAnimals = numberOfAnimals;
             this.numberOfGrasses = numberOfGrasses;
-            //this.dominantGenotype = dominantGenotype;
             this.averageEnergy = averageEnergy;
             this.averageAgeOfDeaths = averageAgeOfDeaths;
             this.averageNumberOfChildren = averageNumberOfChildren;
@@ -267,7 +296,6 @@ public class StatisticsPanel extends JPanel{
         dayInfo.setText("  Day: " + map.getDay());
         numberOfAnimalsInfo.setText("  Number of dinos: " + map.getNumberOfAnimals());
         numberOfPlantsInfo.setText("  Number of plants: " + map.getNumberOfPlants());
-        //dominantGenotypesInfo.setText("  Dominant genotype: " + map.getDominantGenotype());
         averageEnergyInfo.setText("  Average animal energy: " + map.getAverageEnergy());
         averageAgeOfDeathsInfo.setText("  Average age of deaths: " + map.getAverageDeathAge());
         averageNumberOfChildrenInfo.setText("  Average number of children: " + map.getAverageNumberOfChildren());
@@ -277,8 +305,7 @@ public class StatisticsPanel extends JPanel{
         startBtn.setEnabled(false);
         stopBtn.setEnabled(false);
         nextDayBtn.setEnabled(false);
-        saveStatsBtn.setEnabled(true);
-        markDominantGenotypeBtn.setEnabled(false);
+        saveStatsBtn.setEnabled(false);
         trackAnimalBtn.setEnabled(false);
     }
 }

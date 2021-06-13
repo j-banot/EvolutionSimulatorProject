@@ -1,9 +1,8 @@
 package agh.cs.oop.Enums;
 
-//TODO: descriptions and comments in the way shown below
-// /**
-// * Description
-// */
+/**
+ * Enumerator that supports all methods neccessary while using MapDirections
+ */
 
 import agh.cs.oop.Objects.Vector2d;
 
@@ -17,7 +16,9 @@ public enum MapDirection {
     WEST,
     NORTHWEST;
 
-    //clockwise order next direction
+    /**
+     * @ return next clockwise value
+     */
     public MapDirection next(){
         switch(this) {
             case NORTH:
@@ -33,7 +34,9 @@ public enum MapDirection {
         }
     }
 
-    //clockwise order previous direction
+    /**
+     * @ return next counter clockwise value
+     */
     public MapDirection previous(){
         switch(this) {
             case NORTH:
@@ -49,6 +52,10 @@ public enum MapDirection {
         }
     }
 
+    /**
+     * Method that supports changing enum value for a 2D Vector value
+     * @ return Vector object corresponding to it's enum value
+     */
     public Vector2d toUnitVector(){
         switch(this) {
             case NORTH:
@@ -72,6 +79,10 @@ public enum MapDirection {
         }
     }
 
+    /**
+     * Method that supports changing enum value for a int number
+     * @ return Integer corresponding to it's enum value
+     */
     public int getValueOfDirection() {
         switch(this) {
             case NORTH:
@@ -94,6 +105,10 @@ public enum MapDirection {
         }
     }
 
+    /**
+     * Method that supports changing int number into enum value
+     * @ return Enum value corresponding to it's integer value
+     */
     public static MapDirection getDirectionFromValue(int value) {
         switch(value) {
             case 0:

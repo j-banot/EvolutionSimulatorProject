@@ -13,11 +13,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
-public class GamePanel extends JPanel implements MouseListener {
+public class GamePanel extends JPanel implements MouseListener{
 
     private WorldMap map;
     private Timer timer;
@@ -27,10 +26,10 @@ public class GamePanel extends JPanel implements MouseListener {
     private int yMargin;
     private boolean markDominant = false;
     private Animal trackedAnimal = null;
-    private boolean isTrackingModeOn = false;
-    private boolean isAnimalBeingTracked = false;
+    private boolean isFindAnimalToTrackModeOn = false;
+    private boolean isAnimalTracked = false;
     private boolean isDeadAnnounced = false;
-    private int numberOfChildrenOnTrackingStart = 0;
+    private int numberOfChildrenWhenTrackingStarted = 0;
     private int dayOfTrackedAnimalDeath = 0;
     private GraphicTools graphics;
 
@@ -53,7 +52,7 @@ public class GamePanel extends JPanel implements MouseListener {
     }
 
     private void initializeLayout() {
-        setSize(new Dimension(Constants.BOARD_WIDTH - xMargin, Constants.BOARD_HEIGHT - yMargin));
+        setPreferredSize(new Dimension(Constants.BOARD_WIDTH - xMargin, Constants.BOARD_HEIGHT - yMargin));
     }
 
     @Override
@@ -69,8 +68,6 @@ public class GamePanel extends JPanel implements MouseListener {
                     else if (map.objectAt(new Vector2d(x, y)) instanceof Plant) {
                         mapGrid[x][y] = graphics.getPLANT_ON_SAND();
                     } else {
-                        //ArrayList tmpList = (ArrayList) map.objectAt(new Vector2d(x, y));
-                        //mapGrid[x][y] = graphics.getSAND_SQUARE();
                         Animal tmpAnimal = (Animal) map.objectAt(new Vector2d(x, y));
                         double energy = tmpAnimal.getEnergy();
                         if (energy < Constants.LEVEL1) mapGrid[x][y] = graphics.getWHITE_DINO_ON_SAND();
@@ -87,8 +84,6 @@ public class GamePanel extends JPanel implements MouseListener {
                     else if (map.objectAt(new Vector2d(x, y)) instanceof Plant) {
                         mapGrid[x][y] = graphics.getPLANT_ON_GRASS();
                     } else {
-                        //ArrayList tmpList = (ArrayList) map.objectAt(new Vector2d(x, y));
-                        //mapGrid[x][y] = graphics.getGRASS_SQUARE();
                         Animal tmpAnimal = (Animal) map.objectAt(new Vector2d(x, y));
                         double energy = tmpAnimal.getEnergy();
                         if (energy < Constants.LEVEL1) mapGrid[x][y] = graphics.getWHITE_DINO_ON_GRASS();
@@ -110,25 +105,90 @@ public class GamePanel extends JPanel implements MouseListener {
     public void doOneLoop() {
         update();
         repaint(); // paintComponent method is going to be called
-//        if(this.trackedAnimal != null && isAnimalTracked && this.trackedAnimal.isDead() && !this.isDeadAnnounced){
-//            this.dayOfTrackedAnimalDeath = map.getDay();
-//            this.isDeadAnnounced = true;
-//            this.timer.stop();
-//            this.gameFrame.statisticsPanel.timerStop();
-//            showMessageDialog(null, "Tracked animal died on " + map.getDay() + " day [*]");
-//        }
-//        if(this.isAnimalTracked()){
-//            gameMainFrame.statisticsPanel.updateTrackedAnimalStats();
-//        }
+        if(this.trackedAnimal != null && isAnimalTracked && this.trackedAnimal.getIfDead() && !this.isDeadAnnounced){
+            this.dayOfTrackedAnimalDeath = map.getDay();
+            this.isDeadAnnounced = true;
+            this.timer.stop();
+            this.gameFrame.statisticsPanel.timerStop();
+            showMessageDialog(null, "Tracked animal died on " + map.getDay() + " day [*]");
+        }
+        if(this.isAnimalTracked()){
+            gameFrame.statisticsPanel.updateTrackedAnimalStats();
+        }
+    }
+
+    public boolean isAnimalTracked() {
+        return isAnimalTracked;
+    }
+
+    public boolean isFindAnimalToTrackModeOn() {
+        return isFindAnimalToTrackModeOn;
+    }
+
+
+    public void toggleIsAnimalTracked() {
+        this.isAnimalTracked = !this.isAnimalTracked;
+    }
+
+    public void toggleIsFindAnimalToTrackModeOn(){
+        this.isFindAnimalToTrackModeOn = !this.isFindAnimalToTrackModeOn;
     }
 
     private void update() {
         map.nextDay();
     }
 
+    public void setFindAnimalToTrackModeON(boolean trackAnimalModeON) {
+        isFindAnimalToTrackModeOn = trackAnimalModeON;
+    }
+
+    public void setTrackedAnimal(Animal trackedAnimal) {
+        this.trackedAnimal = trackedAnimal;
+    }
+
+    public int getNumberOfChildrenWhenTrackingStarted() {
+        return numberOfChildrenWhenTrackingStarted;
+    }
+
+    public Animal getTrackedAnimal() {
+        return trackedAnimal;
+    }
+
+    public int getDayOfTrackedAnimalDeath() {
+        return dayOfTrackedAnimalDeath;
+    }
+
+
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        if(!this.timer.isRunning() && !isFindAnimalToTrackModeOn){
+            int x = e.getX() / sizeOfSquare;
+            int y = e.getY() / sizeOfSquare;
+            Object animal = map.objectAt(new Vector2d(x, y));
+            if(animal instanceof Animal){
+                StringBuilder genotype = new StringBuilder();
+                int[] genotypeArray = ((Animal) animal).getGenes();
+                for(int gen: genotypeArray){
+                    genotype.append(" ").append(gen);
+                }
+                showMessageDialog(null, "Animal genotype: " + genotype);
+            }
+        }
+        else if(!this.timer.isRunning() && isFindAnimalToTrackModeOn()){
+            int x = e.getX() / sizeOfSquare;
+            int y = e.getY() / sizeOfSquare;
+            Object animal = map.objectAt(new Vector2d(x, y));
+            if(animal instanceof Animal){
+                this.isDeadAnnounced = false;
+                this.numberOfChildrenWhenTrackingStarted = ((Animal) animal).getNumberOfChildren();
+                ((Animal) animal).setIsOffspringOfTrackedAnimal(true);
+                setTrackedAnimal((Animal)animal);
+                toggleIsAnimalTracked();
+                this.gameFrame.statisticsPanel.updateTrackedAnimalStats();
+                repaint();
+                toggleIsFindAnimalToTrackModeOn(); //setting false
+            }
+        }
     }
 
     @Override
