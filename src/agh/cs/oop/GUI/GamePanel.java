@@ -1,5 +1,9 @@
 package agh.cs.oop.GUI;
 
+/**
+ * Class implementing main game panel that is root for map visualisation
+ */
+
 import agh.cs.oop.Constants.Constants;
 import agh.cs.oop.Objects.Animal;
 import agh.cs.oop.Objects.Plant;
@@ -13,7 +17,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class GamePanel extends JPanel implements MouseListener{
@@ -24,11 +27,11 @@ public class GamePanel extends JPanel implements MouseListener{
     private int sizeOfSquare;
     private int xMargin;
     private int yMargin;
-    private boolean markDominant = false;
     private Animal trackedAnimal = null;
-    private boolean isFindAnimalToTrackModeOn = false;
+    private boolean isFindAnimalToTrackModeOn = false; //flag that is set after user selects tracking mode
     private boolean isAnimalTracked = false;
     private boolean isDeadAnnounced = false;
+    // tracked animals properties
     private int numberOfChildrenWhenTrackingStarted = 0;
     private int dayOfTrackedAnimalDeath = 0;
     private GraphicTools graphics;
@@ -39,6 +42,7 @@ public class GamePanel extends JPanel implements MouseListener{
         initializeLayout();
     }
 
+    // support method used by initialization of panel. prepares variables and initializes panels elements
     private void initializeVariables(int sizeOfSquare, int xMargin, int yMargin,
                                      WorldMap map, GameFrame gameFrame, Timer timer) throws IOException {
         graphics = new GraphicTools();
@@ -51,10 +55,13 @@ public class GamePanel extends JPanel implements MouseListener{
         addMouseListener(this);
     }
 
+    // support method used by initialization of panel, sets panel size based on provided constants
     private void initializeLayout() {
         setPreferredSize(new Dimension(Constants.BOARD_WIDTH - xMargin, Constants.BOARD_HEIGHT - yMargin));
     }
 
+    // insert adequate graphic based on it's location (jungle), type of object (plant or animal)
+    // and animals energy level
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -74,7 +81,6 @@ public class GamePanel extends JPanel implements MouseListener{
                         else if (energy < Constants.LEVEL2) mapGrid[x][y] = graphics.getBLUE_DINO_ON_SAND();
                         else if (energy < Constants.LEVEL3) mapGrid[x][y] = graphics.getRED_DINO_ON_SAND();
                         else mapGrid[x][y] = graphics.getPINK_DINO_ON_SAND();
-
                     }
                 }
                 else {
@@ -90,7 +96,6 @@ public class GamePanel extends JPanel implements MouseListener{
                         else if (energy < Constants.LEVEL2) mapGrid[x][y] = graphics.getBLUE_DINO_ON_GRASS();
                         else if (energy < Constants.LEVEL3) mapGrid[x][y] = graphics.getRED_DINO_ON_GRASS();
                         else mapGrid[x][y] = graphics.getPINK_DINO_ON_GRASS();
-
                     }
                 }
             }
@@ -102,9 +107,10 @@ public class GamePanel extends JPanel implements MouseListener{
         }
     }
 
+    // changes between following days are executed
     public void doOneLoop() {
         update();
-        repaint(); // paintComponent method is going to be called
+        repaint(); // paintComponent method will be called
         if(this.trackedAnimal != null && isAnimalTracked && this.trackedAnimal.getIfDead() && !this.isDeadAnnounced){
             this.dayOfTrackedAnimalDeath = map.getDay();
             this.isDeadAnnounced = true;
@@ -124,7 +130,6 @@ public class GamePanel extends JPanel implements MouseListener{
     public boolean isFindAnimalToTrackModeOn() {
         return isFindAnimalToTrackModeOn;
     }
-
 
     public void toggleIsAnimalTracked() {
         this.isAnimalTracked = !this.isAnimalTracked;
@@ -158,9 +163,9 @@ public class GamePanel extends JPanel implements MouseListener{
         return dayOfTrackedAnimalDeath;
     }
 
-
     @Override
     public void mouseClicked(MouseEvent e) {
+        // displaying of animal genes
         if(!this.timer.isRunning() && !isFindAnimalToTrackModeOn){
             int x = e.getX() / sizeOfSquare;
             int y = e.getY() / sizeOfSquare;
@@ -174,6 +179,7 @@ public class GamePanel extends JPanel implements MouseListener{
                 showMessageDialog(null, "Animal genotype: " + genotype);
             }
         }
+        // displaying animal tracking information
         else if(!this.timer.isRunning() && isFindAnimalToTrackModeOn()){
             int x = e.getX() / sizeOfSquare;
             int y = e.getY() / sizeOfSquare;
@@ -186,7 +192,7 @@ public class GamePanel extends JPanel implements MouseListener{
                 toggleIsAnimalTracked();
                 this.gameFrame.statisticsPanel.updateTrackedAnimalStats();
                 repaint();
-                toggleIsFindAnimalToTrackModeOn(); //setting false
+                toggleIsFindAnimalToTrackModeOn(); //set tracking mode back to off
             }
         }
     }

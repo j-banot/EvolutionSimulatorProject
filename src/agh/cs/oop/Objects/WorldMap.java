@@ -7,7 +7,6 @@ package agh.cs.oop.Objects;
 
 import agh.cs.oop.Enums.MapDirection;
 import agh.cs.oop.Interfaces.IWorldMap;
-
 import java.util.*;
 
 public class WorldMap implements IWorldMap {
@@ -151,7 +150,6 @@ public class WorldMap implements IWorldMap {
     public void updateStatsAndRemoveDeads() {
         double currentSumOfAnimalsEnergy = 0;
         int currentNumberOfChildren = 0;
-        int[] currentNumberOfDominantGenotypes = new int[8];
         ArrayList<ArrayList<Animal>> tmpAnimals = new ArrayList<>(animals.values());
         for (ArrayList<Animal> animalList : tmpAnimals) {
             ArrayList<Animal> tmpAnimalList = new ArrayList<>(animalList);
@@ -173,20 +171,10 @@ public class WorldMap implements IWorldMap {
     }
 
     public void moveAnimal(Animal animal) {
-//        animal.setPosition(checkTargetPosition(animal.getPosition().add(animal.getMapDirection().toUnitVector()),
-//                                               animal.getPosition()));
         animal.setPosition(convertPositionToMap(animal.getPosition().add(animal.getMapDirection().toUnitVector())));
     }
 
-    // check if animal can move to a new position, if not it stays in old position
-    public Vector2d checkTargetPosition(Vector2d newPosition, Vector2d oldPosition) {
-        if (canMoveTo(newPosition)) return newPosition;
-        else {
-            return oldPosition;
-        }
-    }
-
-    // converts position to map when we go outside it
+    // converts position to map animal goes out
     private Vector2d convertPositionToMap(Vector2d position) {
         int x = position.x < 0 ? this.mapWidth - 1 : position.x;
         int y = position.y < 0 ? this.mapHeight - 1 : position.y;
@@ -210,7 +198,6 @@ public class WorldMap implements IWorldMap {
         }
     }
 
-    //TODO: check if it is needed
     public boolean areAllAroundOccupied(Vector2d position) {
         Animal tmpAnimal = new Animal(this);
         for (int i = 0; i < 8; i++) {
@@ -224,7 +211,6 @@ public class WorldMap implements IWorldMap {
         return true;
     }
 
-    //TODO: unit test
     public void placeNewAnimal(Vector2d parentPosition, Animal newAnimal) {
         if (!areAllAroundOccupied(parentPosition)) {
             do {
@@ -238,21 +224,6 @@ public class WorldMap implements IWorldMap {
             moveAnimal(newAnimal);
         }
         putAnimalToHashMap(newAnimal.getPosition(), newAnimal);
-        //TODO: check
-//        Vector2d childPosition = null;
-//        for (int i = 0; i < 8; i++) {
-//            Vector2d tmpPosition = parentPosition.add(MapDirection.getDirectionFromValue(i).toUnitVector());
-//            if (!isOccupied(tmpPosition)) {
-//                childPosition = tmpPosition;
-//                putAnimalToHashMap(childPosition, newAnimal);
-//                return;
-//            }
-//        }
-//        Random random = new Random();
-//        int option = random.nextInt(8);
-//        Vector2d positionChange = MapDirection.getDirectionFromValue(option).toUnitVector();
-//        childPosition = parentPosition.add(positionChange);
-//        putAnimalToHashMap(childPosition, newAnimal);
     }
 
     public void placeNewPlants() {
@@ -302,8 +273,6 @@ public class WorldMap implements IWorldMap {
         } else {
             return plants.get(position);
         }
-//        if(animals.containsKey(position)) return animals.get(position);
-//        else return plants.getOrDefault(position, null);
     }
 
     @Override
@@ -313,16 +282,6 @@ public class WorldMap implements IWorldMap {
             return true;
         }
         return false;
-    }
-
-    @Override
-    //TODO: check if it is needed
-    public boolean placeGrass(Plant plantField) {
-        if (!(this.isOccupied(plantField.getPosition()))) {
-            plants.put(plantField.getPosition(), plantField);
-            return true;
-        }
-        throw new IllegalArgumentException("Element can not be placed on: " + plantField.getPosition());
     }
 
     @Override

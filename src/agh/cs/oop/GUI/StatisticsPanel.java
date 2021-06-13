@@ -1,16 +1,18 @@
 package agh.cs.oop.GUI;
 
+/**
+ * Class implementing side panel with statistics display
+ */
+
 import agh.cs.oop.Constants.Constants;
 import agh.cs.oop.Objects.WorldMap;
 import com.google.gson.Gson;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class StatisticsPanel extends JPanel{
@@ -42,7 +44,6 @@ public class StatisticsPanel extends JPanel{
     private JLabel numberOfOffspring;
     private JLabel deathDate;
 
-
     public StatisticsPanel(GamePanel gamePanel, WorldMap map, Timer timer, int yMargin) {
         initializeVariables(yMargin, timer, gamePanel, map);
         initializeLayout();
@@ -55,12 +56,14 @@ public class StatisticsPanel extends JPanel{
         this.gamePanel = gamePanel;
         this.map = map;
 
+        // statisitcs panels buttons actions listeners
         stopActionListener = new StopActionListener();
         startActionListener = new StartActionListener();
         nextDayActionListener = new NextDayActionListener();
         saveStatsActionListener = new SaveStatsActionListener();
         trackAnimalActionListener = new TrackAnimalActionListener();
 
+        // statistics panels buttons
         stopBtn = new JButton("STOP");
         startBtn = new JButton("START");
         nextDayBtn = new JButton("NEXT DAY");
@@ -69,10 +72,11 @@ public class StatisticsPanel extends JPanel{
 
         mapStatisticsTitle = new JLabel("MAP STATS");
         mapStatisticsTitle.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // string building for stats displaying
         dayInfo = new JLabel("  Day: " + map.getDay());
         numberOfAnimalsInfo = new JLabel("  Number of dinos: " + map.getNumberOfAnimals());
         numberOfPlantsInfo = new JLabel("  Number of plants: " + map.getNumberOfPlants());
-        //dominantGenotypesInfo = new JLabel("  Dominant genotype: " + map.getDominantGenotype());
         averageEnergyInfo = new JLabel("  Average animal energy: " + map.getAverageEnergy());
         averageAgeOfDeathsInfo = new JLabel("  Average age of deaths: " + map.getAverageDeathAge());
         averageNumberOfChildrenInfo = new JLabel("  Average number of children: " + map.getAverageNumberOfChildren());
@@ -81,9 +85,8 @@ public class StatisticsPanel extends JPanel{
         numberOfOffspring = new JLabel("");
         deathDate = new JLabel("");
 
-        //TODO: change font
-        Font titleFont = new Font("Courier", Font.BOLD,22);
-        Font font = new Font("Courier", Font.BOLD,16);
+        Font titleFont = new Font("SansSerif", Font.BOLD,26);
+        Font font = new Font("SansSerif", Font.BOLD,18);
         mapStatisticsTitle.setFont(titleFont);
         dayInfo.setFont(font);
         numberOfAnimalsInfo.setFont(font);
@@ -145,6 +148,7 @@ public class StatisticsPanel extends JPanel{
         trackAnimalBtn.addActionListener(trackAnimalActionListener);
     }
 
+    // stop button action listener
     private class StopActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -160,6 +164,7 @@ public class StatisticsPanel extends JPanel{
         }
     }
 
+    // start button action listener
     private class StartActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -175,6 +180,7 @@ public class StatisticsPanel extends JPanel{
         }
     }
 
+    // next day button action listener
     private class NextDayActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -186,6 +192,7 @@ public class StatisticsPanel extends JPanel{
         }
     }
 
+    // save stats button action listener
     private class SaveStatsActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -209,6 +216,7 @@ public class StatisticsPanel extends JPanel{
         }
     }
 
+    // track animal button action listener
     private class TrackAnimalActionListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -249,9 +257,6 @@ public class StatisticsPanel extends JPanel{
         else{
             deathDate.setText("  Animal died on " + gamePanel.getDayOfTrackedAnimalDeath() + " day");
         }
-    }
-
-    public void timerStop() {
     }
 
     public static class StatsToSave{

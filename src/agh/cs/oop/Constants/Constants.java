@@ -1,5 +1,10 @@
 package agh.cs.oop.Constants;
 
+/**
+ * Class manages and prepares all paths to constant resources such as graphic elements or
+ * constants coming from JSON input file
+ */
+
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 

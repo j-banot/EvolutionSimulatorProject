@@ -12,11 +12,8 @@ import agh.cs.oop.Objects.Vector2d;
 public interface IWorldMap extends IPositionChangeObserver {
 
     boolean canMoveTo(Vector2d position);
-    // TO DO: Add IMapElement
-    boolean placeAnimal(Animal animal);
 
-    //TODO: check if it is needed
-    boolean placeGrass(Plant plant);
+    boolean placeAnimal(Animal animal);
 
     boolean isOccupied(Vector2d position);
 

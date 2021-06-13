@@ -68,19 +68,6 @@ public class Animal implements IMapElement {
 
     public int getNumberOfChildren() { return numberOfChildren; }
 
-    private int[] generateRandomGenes(){
-        Random random = new Random();
-        int [] genes = new int[32];
-        for (int i = 0; i < genes.length; i++) {
-            if (i < 8) genes[i] = i;
-            else {
-                genes[i] = random.nextInt(8);
-            }
-        }
-        Arrays.sort(genes);
-        return genes;
-    }
-
     public int[] getGenes() { return genes; }
 
     public boolean getIfDead() { return isDead;}
@@ -105,6 +92,19 @@ public class Animal implements IMapElement {
     }
 
     public void changeEnergy(double difference) { this.energy += difference; }
+
+    private int[] generateRandomGenes(){
+        Random random = new Random();
+        int [] genes = new int[32];
+        for (int i = 0; i < genes.length; i++) {
+            if (i < 8) genes[i] = i;
+            else {
+                genes[i] = random.nextInt(8);
+            }
+        }
+        Arrays.sort(genes);
+        return genes;
+    }
 
     public void changeDirection() {
         Random random = new Random();
